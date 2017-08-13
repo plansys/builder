@@ -1,0 +1,13 @@
+{
+    "name": "plansys/builder",
+    "type": "library",
+    "require": {
+        "plansys/yard": "^0.0.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plansys\\Builder\\": "src/",
+            "builder\\Pages\\": "pages/"
+        }
+    }
+}
