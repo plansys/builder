@@ -2,7 +2,8 @@
     "name": "plansys/builder",
     "type": "library",
     "require": {
-        "plansys/yard": "^0.0.5"
+        "plansys/yard": "^0.0.5",
+        "symfony/filesystem": "^3.3"
     },
     "autoload": {
         "psr-4": {
