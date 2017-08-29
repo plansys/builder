@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="11px" height="11px" viewBox="0 0 11 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43 (38999) - http://www.bohemiancoding.com/sketch -->
+    <title>+ copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="IDE" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-244.000000, -62.000000)" id="Right-Side" stroke="#F3F3F3" stroke-width="2">
+            <g transform="translate(-1.000000, 50.000000)">
+                <g id="Module-Box" transform="translate(1.000000, 0.000000)">
+                    <g id="Module" transform="translate(22.000000, 10.000000)">
+                        <g id="+-copy" transform="translate(222.000000, 2.000000)">
+                            <path d="M5.17647059,0 L5.17647059,10.6764706" id="Path-2"></path>
+                            <path d="M0,5.17647059 L10.6764706,5.17647059" id="Path-2-Copy"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

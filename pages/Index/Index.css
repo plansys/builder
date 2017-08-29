@@ -1,0 +1,87 @@
+.builder-container, input, select, textarea {
+    font-family: 'lato', sans-serif;
+    font-size: 13pt;
+}
+
+.sidebar {
+    color: #fff;
+    background: #181C26;
+}
+
+.sidebar .topmenu {
+    user-select: none;
+    background: #242935;
+    background: -moz-linear-gradient(-45deg, #242935 0%, #161624 100%);
+    background: -webkit-linear-gradient(-45deg, #242935 0%, #161624 100%);
+    background: -o-linear-gradient(-45deg, #242935 0%, #161624 100%);
+    background: -ms-linear-gradient(-45deg, #242935 0%, #161624 100%);
+    background: linear-gradient(135deg, #242935 0%, #161624 100%);
+    padding: 0 10px;
+    cursor: pointer;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#242935', endColorstr='#161624', GradientType=1);
+}
+
+.sidebar .topmenu-label {
+    text-transform: uppercase;
+    font-size: 90%;
+    font-weight: bold;
+    opacity: .7;
+}
+
+.sidebar .module {
+    background: #191A26;
+}
+
+.sidebar .button {
+    background: rgba(255, 255, 255, 0);
+    cursor: pointer;
+}
+
+.sidebar .button:hover {
+    background: rgba(255, 255, 255, .1);
+}
+
+.sidebar .module input,
+.sidebar .search input {
+    padding: 10px;
+    background: transparent url('<?= $this->url ?>/Img/search.svg') no-repeat center right;
+    background-size: 16px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 0;
+    border-right: 6px solid transparent;
+    color: #fff;
+    flex: 1 0 100%;
+    outline: none;
+}
+
+.sidebar .search input:focus {
+    background-color: rgba(255, 255, 255, .1);
+}
+
+.sidebar .module .chooser {
+    text-transform: capitalize;
+    padding: 0 0 0 10px;
+    border:0px;
+    background: transparent url('<?= $this->url ?>/Img/dropdown.svg') no-repeat center right;
+    border-right: 8px solid transparent;
+    width: 100%;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    color:white;
+}
+
+.sidebar .module .chooser option {
+    color:black;
+}
+
+.sidebar .module .chooser:hover {
+    background-color: rgba(255, 255, 255, .1);
+}
+
+.plus {
+    width: 14px;
+}

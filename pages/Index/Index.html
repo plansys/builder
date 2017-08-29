@@ -1,0 +1,57 @@
+<js>
+    let active = this.props.tree.active;
+    let activeLabel = "";
+
+    switch (active) {
+        case 'page': activeLabel = "Pages"; break;
+        case 'redux': activeLabel = "Redux Store"; break;
+    }
+
+    let activeModule = this.props.tree.info[active].module.active;
+    let moduleList = this.props.tree.info[active].module.list;
+    return
+    <div className="builder-container">
+        <ui:Layout.Fullscreen>
+            <ui:Layout.Row>
+                <ui:Layout.Col className="sidebar" width="300px" minWidth="300px">
+                    <ui:Layout.Row height="50px" className="topmenu">
+                        <ui:Layout.Col width="120px" className="logo">
+                            <img src="js: this.url + 'Img/logo.svg'"/>
+                        </ui:Layout.Col>
+                        <ui:Layout.Col valign="center" halign="right">
+                            <div className="topmenu-label">
+                                <js>active</js>
+                            </div>
+                        </ui:Layout.Col>
+                    </ui:Layout.Row>
+                    <ui:Layout.Row height="40px" className="module">
+                        <ui:Layout.Col>
+                            <select title="Choose Module" className="chooser">
+                                <For each="m" of="moduleList">
+                                    <option value="js: m"><js>m || 'Default' </js></option>
+                                </For>
+                            </select>
+                        </ui:Layout.Col>
+                        <ui:Layout.Col width="50px" halign="center" className="button">
+                            <img src="js:this.url + 'Img/plus.svg'" className="icon"/>
+                        </ui:Layout.Col>
+                    </ui:Layout.Row>
+                    <ui:Layout.Row height="40px" className="search" valign="stretch">
+                        <ui:Layout.Col>
+                            <input type="text" spellCheck="false" placeholder="js: 'Search ' + activeLabel"/>
+                        </ui:Layout.Col>
+                        <ui:Layout.Col width="50px" halign="center" className="button">
+                            <img src="js:this.url + 'Img/plus.svg'" className="icon"/>
+                        </ui:Layout.Col>
+                    </ui:Layout.Row>
+                    <ui:Layout.Row>
+                        <builder:Index.Tree />
+                    </ui:Layout.Row>
+                </ui:Layout.Col>
+                <ui:Layout.Separator></ui:Layout.Separator>
+                <ui:Layout.Col>
+                </ui:Layout.Col>
+            </ui:Layout.Row>
+        </ui:Layout.Fullscreen>
+    </div>
+</js>
