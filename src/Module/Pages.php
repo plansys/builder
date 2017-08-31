@@ -6,13 +6,13 @@ use PhpParser\Node\Scalar\MagicConst\File;
 use Plansys\Codegen\ClassCode;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Page
+class Pages
 {
-    use Page\Css;
-    use Page\Html;
-    use Page\Js;
-    use Page\Redux;
-    use Page\Setting;
+    use Pages\Css;
+    use Pages\Html;
+    use Pages\Js;
+    use Pages\Redux;
+    use Pages\Setting;
 
     private $moduleName;
     private $module;
@@ -20,9 +20,11 @@ class Page
     private $pageName;
     private $path;
     private $ast;
+    private $instance;
 
-    public function __construct($moduleName, $module, $pageName, $path = '')
+    public function __construct($base, $moduleName, $pageName, $path = '')
     {
+        $module = $base->modules[$moduleName];
         if (!isset($module['dir'])) {
             throw new \Exception('Module parameter should have "dir" key');
         }
@@ -32,6 +34,7 @@ class Page
         }
 
         $pageName = preg_replace("/[^A-Za-z0-9_]/", '', $pageName);
+        $path = str_replace('\\', '/', $path);
         $filename = '/' . trim($path, '/') . '/' . ucfirst($pageName) . '.php';
         $filename = @$module['dir'] . $filename;
 
@@ -41,9 +44,13 @@ class Page
         $this->moduleName = $moduleName;
         $this->filename = $filename;
         $this->ast = new ClassCode($filename);
+
+        $pagePathName = trim(str_replace('/', '.', $path), '.');
+        $fullPageName = (trim($pagePathName) != '' ? $pagePathName . '.' : '') . $pageName;
+        $this->instance = $base->newPage(($moduleName == '' ? '' : $moduleName. ':') . $fullPageName);
     }
 
-    public function getArray()
+    public function open()
     {
         return [
             'html' => $this->getHtml(),
@@ -59,6 +66,26 @@ class Page
         $this->processNamespace();
         $this->processClass();
         $this->ast->save();
+    }
+
+    public function getModuleName() {
+        return $this->moduleName;
+    }
+
+    public function getModule() {
+        return $this->module;
+    }
+
+    public function getPageName() {
+        return $this->pageName;
+    }
+
+    public function getPath() {
+        return $this->path;
+    }
+
+    public function getFilename() {
+        return $this->filename;
     }
 
     protected function processNamespace()

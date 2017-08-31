@@ -3,33 +3,22 @@
 namespace builder\Pages\Index;
 
 
-class Tree extends \Yard\Page
+class Redux extends \Yard\Page
 {
-    public $store = ['builder:tree', 'builder:tab'];
+    public $store = ['builder:tab'];
 
     public function mapStore()
     {
         return [
-            'tree' => 'builder:tree'
-        ];
-    }
-
-    public function mapAction()
-    {
-        return [
-            'load' => 'builder:tree.load',
-            'updateTree' => 'builder:tree.updateTree',
-            'openTab' => 'builder:tab.openTab',
-            'updateTab' => 'builder:tab.updateTab'
+            'tab' => 'builder:tab'
         ];
     }
 
     public function api($params)
     {
         if (isset($params['action']) && isset($params['active']) && isset($params['info']['module']['active'])) {
-            $treeClass = '\Plansys\Builder\Tree\\' . ucfirst($params['active']);
-            $tree = new $treeClass($this->app, $this->base, $params['info']['module']['active']);
             $tabClass = '\Plansys\Builder\Tab\\' . ucfirst($params['active']);
+            $tree = new $treeClass($this->app, $this->base, $params['info']['module']['active']);
 
             switch ($params['action']) {
                 case "load":
@@ -37,11 +26,6 @@ class Tree extends \Yard\Page
                         'modules' => array_keys($tree->listModule()),
                         'data' => $tree->expand('')
                     ];
-                    break;
-                case "open":
-                    $tab = new $tabClass($this->app, $this->base, $params['info']['module']['active'],
-                        $params['itemLabel'], $params['itemPath']);
-                    return $tab->open();
                     break;
                 case "expand":
                     return $tree->expand(@$params['path']);
@@ -67,16 +51,16 @@ class Tree extends \Yard\Page
 
     public function js()
     {
-        return $this->loadFile('Tree/Tree.js');
+        return $this->loadFile('Tab/Tab.js');
     }
 
     public function css()
     {
-        return $this->loadFile('Tree/Tree.css');
+        return $this->loadFile('Tab/Tab.css');
     }
 
     public function render()
     {
-        return $this->loadFile('Tree/Tree.html');
+        return $this->loadFile('Tab/Tab.html');
     }
 }

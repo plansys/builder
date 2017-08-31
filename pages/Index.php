@@ -4,12 +4,19 @@ namespace builder\Pages;
 
 class Index extends \Yard\Page
 {
-    public $store = ['builder:tree'];
+    public $store = ['builder:tree', 'builder:tab'];
 
     public function mapStore()
     {
         return [
-            'tree' => 'builder:tree'
+            'tree' => 'builder:tree',
+        ];
+    }
+
+    public function mapAction()
+    {
+        return [
+            'changeModule' => 'builder:tree.changeModule',
         ];
     }
 

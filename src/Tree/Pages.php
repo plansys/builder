@@ -32,9 +32,7 @@ class Pages extends Tree
     {
         $list = [];
         foreach ($this->base->modules as $key => $module) {
-            if (isset($module['redux'])) {
-                $list[$key] = $module;
-            }
+            $list[$key] = $module;
         }
 
         return $list;
@@ -51,8 +49,8 @@ class Pages extends Tree
         $basePath = realpath($basePath);
         $rootPath = realpath($this->module['dir']);
 
-        $results = [];
 
+        $results = [];
         $finder = new Finder();
         $finder->directories()->in($basePath);
         $finder->depth(0);
@@ -73,6 +71,7 @@ class Pages extends Tree
 
         $finder = new Finder();
         $finder->files()->name('*.php')->in($basePath);
+        $finder->depth(0);
         foreach ($finder as $f) {
             $results[] = [
                 'path' => str_replace($rootPath, "", $f->getPath()),

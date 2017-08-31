@@ -3,7 +3,7 @@
     let activeLabel = "";
 
     switch (active) {
-        case 'page': activeLabel = "Pages"; break;
+        case 'pages': activeLabel = "Pages"; break;
         case 'redux': activeLabel = "Redux Store"; break;
     }
 
@@ -26,7 +26,9 @@
                     </ui:Layout.Row>
                     <ui:Layout.Row height="40px" className="module">
                         <ui:Layout.Col>
-                            <select title="Choose Module" className="chooser">
+                            <select title="Choose Module" className="chooser" onChange="js: e => {
+                                this.changeModule(e.target.value);
+                            }">
                                 <For each="m" of="moduleList">
                                     <option value="js: m"><js>m || 'Default' </js></option>
                                 </For>
@@ -45,11 +47,14 @@
                         </ui:Layout.Col>
                     </ui:Layout.Row>
                     <ui:Layout.Row>
-                        <builder:Index.Tree />
+                        <builder:Index.Tree ref="js: el => { this.tree = el } " />
                     </ui:Layout.Row>
                 </ui:Layout.Col>
                 <ui:Layout.Separator></ui:Layout.Separator>
                 <ui:Layout.Col>
+                    <ui:Layout.Row>
+                        <builder:Index.Tab/>
+                    </ui:Layout.Row>
                 </ui:Layout.Col>
             </ui:Layout.Row>
         </ui:Layout.Fullscreen>

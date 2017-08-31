@@ -6,9 +6,9 @@ class treeReducer extends \Yard\Redux\Reducer
     {
         return <<<JS
 return {
-    active: 'redux',
+    active: 'pages',
     info: {
-        page: {
+        pages: {
             module: {
                 active: '',
                 list: []
@@ -29,6 +29,7 @@ return {
         }
     },
     data: {
+        pages: [],
         redux: [],
         db: []
     }
@@ -63,6 +64,21 @@ JS;
                     return {
                         ...state,
                         data
+                    }
+                }'
+            ],
+            [
+                'type' => 'builder/tree/changeModule',
+                'reducer' => 'js: function(state, payload) {
+                    let info = {
+                        ...state.info,
+                    };
+                    info[state.active].module.active = payload;
+                    console.log(info);
+                    
+                    return { 
+                        ...state,
+                        info
                     }
                 }'
             ],

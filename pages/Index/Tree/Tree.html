@@ -7,7 +7,7 @@
             <div className="tree-box">
                 <ui:Tree.Item>
                     <ui:Utils.Draggable>
-                        <div className="tree-item" key="js: key" onClick="js: (e) => { console.log('iniininin'); this.toggleExpand(e, item) }">
+                        <div className="tree-item" key="js: key" onClick="js: (e) => { this.toggleExpand(e, item) }">
                             <If condition="item.hasChild">
                                 <img src="js: this.getArrow(item)" className="icon"/>
                             </If>

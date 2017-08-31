@@ -12,31 +12,22 @@ this.initTree = (ref) => {
     this.query({
         action: 'load',
     }).then(res => {
-        let result = JSON.parse(res);
-        result.active = this.props.tree.active;
-        this.props.load(result);
+        console.log(res);
+        let data = JSON.parse(res);
+        this.props.openTab(data);
     });
-};
-
-this.getArrow = item => {
-    return this.url + '/Img/' + (item.expanded ? 'dropdown.svg' : 'dropright.svg');
 };
 
 this.update = (item, data) => {
     this.props.updateTree({
         active: this.props.tree.active,
-        data: item.$set(data).$getRawRoot()
+        data: item.$set(data).$getRoot()
     });
 }
 
 this.toggleExpand = (e, item) => {
     e.stopPropagation();
     e.preventDefault();
-
-    if (!item.$set) {
-        console.log(item);
-        return;
-    }
 
     if (!item.expanded) {
         if (!item.hasChild) {
@@ -46,8 +37,7 @@ this.toggleExpand = (e, item) => {
 
         this.query({
             action: 'expand',
-            path: item.path.substr(1) + '/' + item.info.relativePathname
-            // path: item.info.relativePathname
+            path: item.info.relativePathname
         }).then(res => {
             this.update(item, {
                 expanded: true,
@@ -63,12 +53,4 @@ this.toggleExpand = (e, item) => {
 
 this.open = item => {
     console.log(item);
-    this.query({
-        action: 'open',
-        itemPath: item.path,
-        itemLabel: item.label
-    }).then(res => {
-        let result = JSON.parse(res);
-        console.log(result);
-    });
 };

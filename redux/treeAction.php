@@ -13,6 +13,11 @@ class treeAction extends \Yard\Redux\Action {
                 'params' => "payload",
                 'payload' => "payload"
             ],
+            'changeModule' => [
+                'type' => "builder/tree/changeModule",
+                'params' => "payload",
+                'payload' => "payload"
+            ],
         ];
     }
 }

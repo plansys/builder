@@ -12,4 +12,12 @@ class Redux
     {
         return [];
     }
+
+    public function open() {
+
+    }
+
+    public function save() {
+
+    }
 }
