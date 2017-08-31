@@ -7,38 +7,50 @@
     let redux = undefined;
 
     pageData.map((item) => {
-        switch(item.type) {
-            case 'html':
-                html = item.value;
-                break;
-            case 'css':
-                css = item.value;
-                break;
-            case 'js':
-                js = item.value;
-                break;
-            case 'setting':
-                setting = item.value;
-                break;
-            case 'redux':
-                redux = item.value;
-                break;
-        }
+    switch(item.type) {
+    case 'html':
+    html = item.value;
+    break;
+    case 'css':
+    css = item.value;
+    break;
+    case 'js':
+    js = item.value;
+    break;
+    case 'setting':
+    setting = item.value;
+    break;
+    case 'redux':
+    redux = item.value;
+    break;
+    }
     });
 
     return
-    <div>
-        <ui:Tab.Root className="builder-tab" data="pageData">
+    <ui:Tab.Root className="builder-tab" data="pageData">
+        <ui:Layout.Row height="30px">
             <ui:Tab.Nav>
-                <button className="js: item.active ? 'active' : ''"><js>item.type</js></button>
+                <button className="js: item.active ? 'active' : ''">
+                    <js>item.type</js>
+                </button>
             </ui:Tab.Nav>
+        </ui:Layout.Row>
+        <ui:Layout.Row>
             <ui:Tab.Content>
-                <builder:Editor.Pages.Html style="js: { display: item.type == 'html' ? 'block' : 'none'}" value="js: html" />
-                <builder:Editor.Pages.Css style="js: { display: item.type == 'css' ? 'block' : 'none'}" value="js: css"/>
-                <builder:Editor.Pages.Js style="js: { display: item.type == 'js' ? 'block' : 'none'}" value="js: js" />
-                <builder:Editor.Pages.Setting style="js: { display: item.type == 'setting' ? 'block' : 'none'}" value="js: this.setting"/>
-                <builder:Editor.Pages.Redux style="js: { display: item.type == 'redux' ? 'block' : 'none'}" value="js: this.redux"/>
+                <ui:Layout.Row className="editor">
+                    <builder:Editor.Pages.Html style="js: { display: item.type == 'html' ? 'block' : 'none'}"
+                                               value="js: html"/>
+                    <builder:Editor.Pages.Css style="js: { display: item.type == 'css' ? 'block' : 'none'}"
+                                              value="js: css"/>
+                    <builder:Editor.Pages.Js style="js: { display: item.type == 'js' ? 'block' : 'none'}"
+                                             value="js: js"/>
+                    <builder:Editor.Pages.Setting style="js: { display: item.type == 'setting' ? 'block' : 'none'}"
+                                                  value="js: this.setting"/>
+                    <builder:Editor.Pages.Redux style="js: { display: item.type == 'redux' ? 'block' : 'none'}"
+                                                value="js: this.redux"/>
+                </ui:Layout.Row>
             </ui:Tab.Content>
-        </ui:Tab.Root>
-    </div>
+        </ui:Layout.Row>
+
+    </ui:Tab.Root>
 </js>

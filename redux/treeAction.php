@@ -18,6 +18,11 @@ class treeAction extends \Yard\Redux\Action {
                 'params' => "payload",
                 'payload' => "payload"
             ],
+            'openTab' => [
+                'type' => "builder/tab/openTab",
+                'params' => "payload",
+                'payload' => "payload"
+            ],
         ];
     }
 }

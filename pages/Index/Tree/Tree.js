@@ -62,7 +62,6 @@ this.toggleExpand = (e, item) => {
 };
 
 this.open = item => {
-    console.log(item);
     this.query({
         action: 'open',
         itemPath: item.path,
@@ -70,5 +69,9 @@ this.open = item => {
     }).then(res => {
         let result = JSON.parse(res);
         console.log(result);
+        this.props.openTab({
+            data: result,
+            treeItem: item
+        });
     });
 };

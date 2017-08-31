@@ -24,7 +24,6 @@ class Pages extends Tab
 
     public function open() {
         $values = $this->page->open();
-        var_dump($values); die();
         $data = [
             'type' => 'pages',
             'active' => false,

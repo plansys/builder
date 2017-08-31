@@ -54,10 +54,22 @@ JS;
             [
                 'type' => 'builder/tab/openTab',
                 'reducer' => 'js: function(state, payload) {
-                    let data = {
-                        ...state.data,
-                    };
-                    data.push(payload);
+                    let data = state.data;
+                    console.log(data, payload.data);
+                    
+                    var canPush = true;
+                    for(var i = 0; i < data.length; i++) {
+                        data[i].active = false;
+                        if(data[i].label == payload.data.label) {
+                            canPush = false;
+                            data[i].active = true;
+                        }
+                    }
+                    
+                    if(canPush) {
+                        payload.data.active = true;
+                        data.push(payload.data);
+                    }
                     
                     return {
                         ...state,
