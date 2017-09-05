@@ -1,9 +1,9 @@
 <?php
 
-namespace builder\Pages\Index;
+namespace builder\Pages\Index\Tab;
 
 
-class Pages extends \Yard\Page
+class Db extends \Yard\Page
 {
     public $store = ['builder:tab'];
 
@@ -51,16 +51,16 @@ class Pages extends \Yard\Page
 
     public function js()
     {
-        return $this->loadFile('Pages/Pages.js');
+        return $this->loadFile('Db/Db.js');
     }
 
     public function css()
     {
-        return $this->loadFile('Pages/Pages.css');
+        return $this->loadFile('Db/Db.css');
     }
 
     public function render()
     {
-        return $this->loadFile('Pages/Pages.html');
+        return $this->loadFile('Db/Db.html');
     }
 }

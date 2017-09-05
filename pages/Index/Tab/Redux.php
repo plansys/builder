@@ -1,9 +1,9 @@
 <?php
 
-namespace builder\Pages\Index;
+namespace builder\Pages\Index\Tab;
 
 
-class Db extends \Yard\Page
+class Redux extends \Yard\Page
 {
     public $store = ['builder:tab'];
 
@@ -51,16 +51,16 @@ class Db extends \Yard\Page
 
     public function js()
     {
-        return $this->loadFile('Tab/Tab.js');
+        return $this->loadFile('Redux/Redux.js');
     }
 
     public function css()
     {
-        return $this->loadFile('Tab/Tab.css');
+        return $this->loadFile('Redux/Redux.css');
     }
 
     public function render()
     {
-        return $this->loadFile('Tab/Tab.html');
+        return $this->loadFile('Redux/Redux.html');
     }
 }

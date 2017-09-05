@@ -25,7 +25,7 @@ this.getArrow = item => {
 this.update = (item, data) => {
     this.props.updateTree({
         active: this.props.tree.active,
-        data: item.$set(data).$getRawRoot()
+        data: item._set(data)
     });
 }
 
@@ -33,9 +33,8 @@ this.toggleExpand = (e, item) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (!item.$set) {
-        console.log(item);
-        return;
+    if (!item._set) {
+        throw Error(`item._set is not declared`, item);
     }
 
     if (!item.expanded) {
@@ -47,7 +46,6 @@ this.toggleExpand = (e, item) => {
         this.query({
             action: 'expand',
             path: item.path.substr(1) + '/' + item.info.relativePathname
-            // path: item.info.relativePathname
         }).then(res => {
             this.update(item, {
                 expanded: true,
@@ -68,7 +66,6 @@ this.open = item => {
         itemLabel: item.label
     }).then(res => {
         let result = JSON.parse(res);
-        console.log(result);
         this.props.openTab({
             data: result,
             treeItem: item

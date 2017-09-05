@@ -55,7 +55,6 @@ JS;
                 'type' => 'builder/tab/openTab',
                 'reducer' => 'js: function(state, payload) {
                     let data = state.data;
-                    console.log(data, payload.data);
                     
                     var canPush = true;
                     for(var i = 0; i < data.length; i++) {

@@ -2,7 +2,7 @@
     let tabData = this.props.tab.data;
 
     return
-    <ui:Tab.Root className="builder-tab" data="tabData" onChange="js: function (item, old) { /*this.changeTab(item, old)*/ }">
+    <ui:Tab.Root className="builder-tab" data="tabData" onChange="js: (item, old) => { /*this.changeTab(item, old)*/ }">
         <ui:Layout.Row height="25px">
             <ui:Tab.Nav>
                 <button className="js: item.active ? 'active' : ''">
@@ -14,13 +14,13 @@
             <ui:Tab.Content>
                 <Switch evaluate="js: item.type">
                     <Case is="'pages'">
-                        <builder:Index.Pages content="js: item.content"/>
+                        <builder:Index.Tab.Pages content="js: item.content"/>
                     </Case>
                     <Case is="'redux'">
-                        <builder:Index.Redux content="js: item.content"/>
+                        <builder:Index.Tab.Redux content="js: item.content"/>
                     </Case>
                     <Case is="'db'">
-                        <builder:Index.Db content="js: item.content"/>
+                        <builder:Index.Tab.Db content="js: item.content"/>
                     </Case>
                 </Switch>
             </ui:Tab.Content>

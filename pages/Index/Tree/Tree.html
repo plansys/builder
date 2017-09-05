@@ -6,7 +6,7 @@
         <ui:Tree.Root className="builder-tree" data="activeData" childKey="childs">
             <div className="tree-box">
                 <ui:Tree.Item>
-                    <ui:Utils.Draggable>
+                    <ui:Utils.Draggable key="js: key">
                         <div className="tree-item" key="js: key" onClick="js: (e) => { this.toggleExpand(e, item) }">
                             <If condition="item.hasChild">
                                 <img src="js: this.getArrow(item)" className="icon"/>

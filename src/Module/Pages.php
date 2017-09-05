@@ -47,6 +47,7 @@ class Pages
 
         $pagePathName = trim(str_replace('/', '.', $path), '.');
         $fullPageName = (trim($pagePathName) != '' ? $pagePathName . '.' : '') . $pageName;
+
         $this->instance = $base->newPage(($moduleName == '' ? '' : $moduleName. ':') . $fullPageName);
     }
 
