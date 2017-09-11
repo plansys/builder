@@ -3,14 +3,15 @@
     let activeLabel = "";
 
     switch (active) {
-    case 'pages': activeLabel = "Pages"; break;
-    case 'redux': activeLabel = "Redux Store"; break;
+        case 'pages': activeLabel = "Pages"; break;
+        case 'redux': activeLabel = "Redux Store"; break;
     }
 
     let activeModule = this.props.tree.info[active].module.active;
     let moduleList = this.props.tree.info[active].module.list;
     return
     <div className="builder-container">
+        <builder:Index.Popups></builder:Index.Popups>
         <ui:Layout.Fullscreen>
             <ui:Layout.Row>
                 <ui:Layout.Col className="sidebar" width="300px" minWidth="300px">
@@ -26,17 +27,22 @@
                     </ui:Layout.Row>
                     <ui:Layout.Row height="40px" className="module">
                         <ui:Layout.Col>
-                            <select title="Choose Module" className="chooser" onChange="js: e => {
-                                this.changeModule(e.target.value);
-                            }">
-                                <For each="m" of="moduleList">
+                            <select title="Choose Module" className="chooser"
+                                    onChange="js: e => {
+                                        this.changeModule(e.target.value);
+                                    }">
+                                <For each="moduleList" as="m">
                                     <option value="js: m">
-                                        <js>m || 'Default'</js>
+                                        <js>
+                                            let plansys = this.props.tree.plansysModules.indexOf(m) >= 0 ? '[plansys] ' : '';
+                                            return plansys + (m || 'default')
+                                        </js>
                                     </option>
                                 </For>
                             </select>
                         </ui:Layout.Col>
-                        <ui:Layout.Col width="50px" halign="center" className="button">
+                        <ui:Layout.Col data-popup-click:create-module="js: activeModule"
+                                       width="50px" halign="center" className="button">
                             <img src="js:this.url + 'Img/plus.svg'" className="icon"/>
                         </ui:Layout.Col>
                     </ui:Layout.Row>
@@ -44,7 +50,8 @@
                         <ui:Layout.Col>
                             <input type="text" spellCheck="false" placeholder="js: 'Search ' + activeLabel"/>
                         </ui:Layout.Col>
-                        <ui:Layout.Col width="50px" halign="center" className="button">
+                        <ui:Layout.Col data-popup-click:create-page="/"
+                                       width="50px" halign="center" className="button">
                             <img src="js:this.url + 'Img/plus.svg'" className="icon"/>
                         </ui:Layout.Col>
                     </ui:Layout.Row>
@@ -55,7 +62,7 @@
                 <ui:Layout.Separator></ui:Layout.Separator>
                 <ui:Layout.Col>
                     <ui:Layout.Row>
-                        <builder:Index.Tab/>
+                        <!--<builder:Index.Tab/>-->
                     </ui:Layout.Row>
                 </ui:Layout.Col>
             </ui:Layout.Row>

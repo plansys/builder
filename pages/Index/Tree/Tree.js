@@ -1,5 +1,42 @@
 this.db = null;
 
+this.contextMenu = [
+    {
+        label: 'New Page',
+        icon: '',
+        props: (treeItem, menuItem, hide) => {
+            return {
+                onClick: (e) => {
+                    this.popups.createPage.show(e, {
+                        data: '/jos'
+                    });
+                    hide();
+                }
+            }
+        }
+    },
+    '---',
+    {
+        label: 'Rename',
+        icon: '',
+    },
+    {
+        label: 'Delete',
+        icon: '',
+    },
+];
+
+this.contextMenuProps = (treeItem, menuItem, hide) => {
+    if (typeof menuItem.props === 'function') {
+        return menuItem.props(treeItem, menuItem, hide);
+    }
+    return {
+        onClick: (e) => {
+            hide();
+        }
+    };
+}
+
 this.query = params => {
     params.active = this.props.tree.active;
     params.info = this.props.tree.info[this.props.tree.active];
@@ -19,7 +56,7 @@ this.initTree = (ref) => {
 };
 
 this.getArrow = item => {
-    return this.url + '/Img/' + (item.expanded ? 'dropdown.svg' : 'dropright.svg');
+    return this.url + '/Img/' + (item.expanded ? 'down-arrow.svg' : 'right-arrow.svg');
 };
 
 this.update = (item, data) => {
@@ -65,10 +102,14 @@ this.open = item => {
         itemPath: item.path,
         itemLabel: item.label
     }).then(res => {
-        let result = JSON.parse(res);
-        this.props.openTab({
-            data: result,
-            treeItem: item
-        });
+        try {
+            let result = JSON.parse(res);
+            this.props.openTab({
+                data: result,
+                treeItem: item
+            });
+        } catch (e) {
+            console.log('error in json');
+        }
     });
 };

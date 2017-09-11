@@ -49,12 +49,13 @@ class Pages extends Tree
         $basePath = realpath($basePath);
         $rootPath = realpath($this->module['dir']);
 
-
         $results = [];
         $finder = new Finder();
         $finder->directories()->in($basePath);
         $finder->depth(0);
         foreach ($finder as $f) {
+            if (strpos($f->getFilename(), '_') === 0) continue;
+
             $results[] = [
                 'path' => str_replace($rootPath, "", $f->getPath()),
                 'label' => str_replace(".php", "", $f->getFilename()),
@@ -73,6 +74,8 @@ class Pages extends Tree
         $finder->files()->name('*.php')->in($basePath);
         $finder->depth(0);
         foreach ($finder as $f) {
+            if (strpos($f->getFilename(), '_') === 0) continue;
+
             $results[] = [
                 'path' => str_replace($rootPath, "", $f->getPath()),
                 'label' => str_replace(".php", "", $f->getFilename()),

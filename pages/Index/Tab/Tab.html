@@ -2,7 +2,7 @@
     let tabData = this.props.tab.data;
 
     return
-    <ui:Tab.Root className="builder-tab" data="tabData" onChange="js: (item, old) => { /*this.changeTab(item, old)*/ }">
+    <ui:Tab className="builder-tab" data="tabData" onChange="js: (item, old) => { /*this.changeTab(item, old)*/ }">
         <ui:Layout.Row height="25px">
             <ui:Tab.Nav>
                 <button className="js: item.active ? 'active' : ''">
@@ -25,5 +25,5 @@
                 </Switch>
             </ui:Tab.Content>
         </ui:Layout.Row>
-    </ui:Tab.Root>
+    </ui:Tab>
 </js>

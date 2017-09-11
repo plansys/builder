@@ -1,5 +1,58 @@
+.builder-tree {
+    width: 100%;
+}
+
 .builder-tree .tree-item {
-    padding:7px 0 0 25px;
-    cursor:pointer;
-    font-size:105%;
+    padding: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.builder-tree .tree-item-label {
+    border-bottom: 1px solid #252E35;
+    padding: 7px 0;
+    font-size: 90%;
+}
+
+.builder-tree .tree-item-label:hover {
+    background: #252E35;
+}
+
+.builder-tree .tree-item-span {
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.builder-tree .tree-item-icon {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+}
+
+.tree-context-menu {
+    width: 200px;
+    border-radius: 5px;
+    font-size: 90%;
+    padding: 5px 0;
+    background: white;
+    color: #495A5E;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: default;
+    user-select: none;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .4);
+}
+
+.tree-context-menu-itemsep {
+    margin: 3px 18px;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.tree-context-menu-item {
+    padding: 6px 20px;
+}
+
+.tree-context-menu-item:hover {
+    background: rgba(0, 0, 0, .1);
 }

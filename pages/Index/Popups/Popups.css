@@ -1,0 +1,82 @@
+
+.popup-dialog {
+    border-radius: 5px;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, .7);
+    background: #262A32;
+    box-sizing: border-box;
+    color: #d9d9d9;
+    width: 500px;
+}
+
+.popup-dialog-title {
+    border-bottom: 1px solid #444444;
+    padding: 15px;
+    font-size: 100%;
+    font-weight: bold;
+    user-select: none;
+    cursor:default;
+}
+
+.popup-dialog-close {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    cursor: pointer;
+    font-size: 150%;
+    opacity: 0.5;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.popup-dialog-close:hover {
+    opacity: 1;
+}
+
+.popup-dialog-content {
+    line-height: 150%;
+    padding: 10px 15px;
+}
+
+.popup-dialog-content small {
+    opacity: .6;
+    font-size: 90%;
+    font-style: italic;
+    display:block;
+}
+
+.popup-dialog-btns {
+    padding: 10px;
+    text-align: center;
+}
+
+.popup-dialog-full-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    margin: 10px 0;
+    background: #353840;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, .2);
+}
+
+.popup-dialog-btn {
+    color: rgba(255, 255, 255, .8);
+    padding: 7px 15px;
+    min-width: 100px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin: 0 5px;
+    display: inline-block;
+    cursor: pointer;
+    background: rgba(255, 255, 255, .05);
+    border: 2px solid rgba(255, 255, 255, .6);
+}
+.popup-dialog-btn:hover {
+    background: rgba(255, 255, 255, .2);
+}

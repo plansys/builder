@@ -2,26 +2,54 @@
     let activeData = this.props.tree.data[this.props.tree.active];
 
     return
-    <div>
-        <ui:Tree.Root className="builder-tree" data="activeData" childKey="childs">
+    <div className="builder-tree">
+        <builder:Index.Popups ref="js: ref => this.popups = ref"></builder:Index.Popups>
+        <ui:Popup name="tree-cm" position="mouse">
+            <div className="tree-context-menu">
+                <For each="data.contextMenu" as="menuItem">
+                    <If condition="typeof menuItem == 'string'">
+                        <div className="tree-context-menu-itemsep"></div>
+                    </If>
+                    <Else>
+                        <div className="tree-context-menu-item"
+                             js:spread="this.contextMenuProps.bind(this)(data.treeItem, menuItem, hide)">
+                            <js>menuItem.label</js>
+                        </div>
+                    </Else>
+                </For>
+            </div>
+        </ui:Popup>
+        <ui:Tree data="activeData" childKey="childs">
             <div className="tree-box">
                 <ui:Tree.Item>
-                    <ui:Utils.Draggable key="js: key">
-                        <div className="tree-item" key="js: key" onClick="js: (e) => { this.toggleExpand(e, item) }">
-                            <If condition="item.hasChild">
-                                <img src="js: this.getArrow(item)" className="icon"/>
-                            </If>
+                    <div className="tree-item"
+                         data-popup-rclick:tree-cm="js: {
+                            contextMenu: this.contextMenu,
+                            treeItem: item._original,
+                            popups: this.popups
+                         }"
+                         onClick="js: (e) => { this.toggleExpand(e, item) }">
+
+                        <div className="tree-item-label">
+                            <div className="tree-item-span" style="js: { width: (item._depth * 15) + 'px'}"></div>
+
+                            <div className="tree-item-icon">
+                                <If condition="item.hasChild">
+                                    <img src="js: this.getArrow(item)"/>
+                                </If>
+                            </div>
                             <js>item.label</js>
-                            <If condition="js: item.childs && item.expanded">
-                                <div>
-                                    <ui:Tree.Child/>
-                                </div>
-                            </If>
                         </div>
-                    </ui:Utils.Draggable>
+
+                        <If condition="js: item.childs && item.expanded">
+                            <div>
+                                <ui:Tree.Child/>
+                            </div>
+                        </If>
+                    </div>
                 </ui:Tree.Item>
             </div>
-        </ui:Tree.Root>
+        </ui:Tree>
 
         <yard:Api ref="js: el => { this.initTree(el) }"/>
     </div>

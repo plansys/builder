@@ -7,6 +7,7 @@ class treeReducer extends \Yard\Redux\Reducer
         return <<<JS
 return {
     active: 'pages',
+    plansysModules: ['yard','ui','db','user','builder','jasper'],
     info: {
         pages: {
             module: {
@@ -74,7 +75,6 @@ JS;
                         ...state.info,
                     };
                     info[state.active].module.active = payload;
-                    console.log(info);
                     
                     return { 
                         ...state,
