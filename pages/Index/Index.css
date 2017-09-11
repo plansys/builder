@@ -70,7 +70,8 @@
 .sidebar .module .chooser {
     padding: 0 0 0 10px;
     border: 0px;
-    background: transparent url('<?= $this->url ?>/Img/dropdown.svg') no-repeat center right;
+    background: transparent url('<?= $this->url ?>/Img/down-arrow.svg') no-repeat center right;
+    background-size:18px 18px;
     border-right: 8px solid transparent;
     width: 100%;
     cursor: pointer;
