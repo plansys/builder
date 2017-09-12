@@ -92,43 +92,4 @@ class Pages extends Tree
 
         return $results;
     }
-
-    public function createPage($pageName, $path = '')
-    {
-        $module = new Module($this->base, $this->moduleName);
-        $module->createPage($pageName, $path);
-    }
-
-    public function createDir($dirName, $path = '')
-    {
-        $rootPath = realpath($this->module['dir']);
-        if ($path == '') {
-            $path = '/';
-        } else {
-            $path = trim('/', $path);
-        }
-        $path = str_replace("/", DIRECTORY_SEPARATOR, $path);
-        $dirPath = $rootPath . $path . $dirName;
-
-        $fs = new Filesystem();
-        $fs->mkdir($dirPath);
-    }
-
-    public function move($fromPath, $toPath)
-    {
-        $fs = new Filesystem();
-        $fs->rename($fromPath, $toPath);
-    }
-
-    public function copy($fromPath, $toPath)
-    {
-        $fs = new Filesystem();
-        $fs->copy($fromPath, $toPath);
-    }
-
-    public function delete($path)
-    {
-        $fs = new Filesystem();
-        $fs->remove($path);
-    }
 }

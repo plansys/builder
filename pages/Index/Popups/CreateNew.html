@@ -1,0 +1,24 @@
+<ui:Popup name="create-new"
+          ref="js: ref => this.createNew = ref">
+    <div className="popup-dialog create-module">
+        <div className="popup-dialog-close" onClick="js: hide">×</div>
+        <div className="popup-dialog-title">Create New <js>data ? data.label : ''</js></div>
+        <div className="popup-dialog-content">
+            <label>
+                <input ref="js: ref => {
+                            if (ref) {
+                                ref.value = '';
+                                ref.focus();
+                            }
+                       }"
+                       spellCheck="false"
+                       type="text" placeholder="js: (data ? data.type + ' ' : ' ') + 'Name (Capitalized, no-space, alphanumeric)'"
+                       className="popup-dialog-full-input"/>
+                <small>Page location:  <js>data ? data.path : ''</js></small>
+            </label>
+            <div className="popup-dialog-btns">
+                <div className="popup-dialog-btn" onClick="js: hide">OK</div>
+            </div>
+        </div>
+    </div>
+</ui:Popup>

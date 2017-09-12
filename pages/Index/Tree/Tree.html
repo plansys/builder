@@ -5,7 +5,7 @@
     <div className="builder-tree">
         <builder:Index.Popups ref="js: ref => this.popups = ref" />
 
-        <ui:Popup name="tree-cm" position="mouse">
+        <ui:Popup name="tree-cm" position="mouse" ref="js: ref => this.treeCM = ref">
             <div className="tree-context-menu">
                 <For each="data.contextMenu" as="menuItem">
                     <If condition="this.contextMenuVisible(data.treeItem, menuItem)">
@@ -23,19 +23,18 @@
             </div>
         </ui:Popup>
 
-
         <ui:Tree data="activeData" childKey="childs">
             <div className="tree-box">
                 <ui:Tree.Item>
                     <div className="tree-item"
                          data-popup-rclick:tree-cm="js: {
                             contextMenu: this.contextMenu,
-                            treeItem: item._original,
+                            treeItem: item,
                             popups: this.popups
                          }"
                          onClick="js: (e) => { this.toggleExpand(e, item) }">
 
-                        <div className="tree-item-label">
+                        <div className="js: 'tree-item-label' + (item.cut ? ' gray' : '')">
                             <div className="tree-item-span" style="js: { width: (item._depth * 15) + 'px'}"></div>
 
                             <div className="tree-item-icon">

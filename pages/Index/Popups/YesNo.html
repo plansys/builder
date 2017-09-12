@@ -1,0 +1,18 @@
+<ui:Popup name="yes-no"
+          ref="js: ref => this.yesNo = ref">
+    <div className="popup-dialog create-module">
+        <div className="popup-dialog-close" onClick="js: hide">×</div>
+        <div className="popup-dialog-title"><js>data ? data.title : ''</js></div>
+        <div className="popup-dialog-content">
+            <label>
+                <js>data ? data.message : ''</js>
+            </label>
+            <div className="popup-dialog-btns">
+                <div className="popup-dialog-btn" onClick="js: hide">Yes</div>
+            </div>
+            <div className="popup-dialog-btns">
+                <div className="popup-dialog-btn" onClick="js: hide">No</div>
+            </div>
+        </div>
+    </div>
+</ui:Popup>

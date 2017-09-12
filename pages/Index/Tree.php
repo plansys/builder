@@ -47,16 +47,20 @@ class Tree extends \Yard\Page
                     return $tree->expand(@$params['path']);
                     break;
                 case "rename":
-                    return $tree->rename($params['path'], $params['name']);
+                    $result = $tree->rename($params['path'], $params['name']);
+                    return $this->after_file_operation($result, $tree, @$params['path']);
                     break;
                 case "delete":
-                    return $tree->delete($params['path']);
+                    $result = $tree->delete($params['path']);
+                    return $this->after_file_operation($result, $tree, @$params['path']);
                     break;
                 case "copy":
-                    return $tree->copy($params['from'], $params['from']);
+                    $result = $tree->copy($params['from'], $params['to']);
+                    return $this->after_file_operation($result, $tree, @$params['path']);
                     break;
                 case "move":
-                    return $tree->move($params['from'], $params['from']);
+                    $result = $tree->move($params['from'], $params['to']);
+                    return $this->after_file_operation($result, $tree, @$params['path']);
                     break;
                 case "search":
                     return $tree->search($params['text'], @$params['path']);
@@ -78,5 +82,16 @@ class Tree extends \Yard\Page
     public function render()
     {
         return $this->loadFile('Tree/Tree.html');
+    }
+
+    private function after_file_operation($result, $tree, $path) {
+        switch ($result) {
+            case 'ok':
+                return $tree->expand($path);
+                break;
+            default:
+                return $result;
+                break;
+        }
     }
 }

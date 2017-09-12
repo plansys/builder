@@ -1,4 +1,4 @@
-this.db = null;
+this.api = null;
 
 this.contextMenu = [
     {
@@ -7,8 +7,11 @@ this.contextMenu = [
         props: (treeItem, menuItem, hide) => {
             return {
                 onClick: (e) => {
-                    this.popups.createPage.show(e, {
-                        data: (treeItem.hasChild ? '/' + treeItem.label : '/' + treeItem.path)
+                    this.popups.createNew.show(e, {
+                        data: {
+                            label: 'Page',
+                            path: (treeItem.hasChild ? '/' + treeItem.label : '/' + treeItem.path)
+                        }
                     });
                     hide();
                 }
@@ -18,30 +21,97 @@ this.contextMenu = [
     {
         label: 'New Folder',
         icon: '',
+        props: (treeItem, menuItem, hide) => {
+            return {
+                  onClick: (e) => {
+                      this.popups.createNew.show(e, {
+                          data: {
+                            label: 'Folder',
+                            path: (treeItem.hasChild ? '/' + treeItem.label : '/' + treeItem.path)
+                          }
+                      });
+                      hide();
+                }
+            }
+        }
     },
     '---',
     {
         label: 'Cut',
         icon: '',
+        props: (treeItem, menuItem, hide) => {
+            return {
+                onClick: (e) => {
+                    this.treeCM.clipboard = treeItem;
+                    this.update(treeItem, {cut: true});
+                    hide();
+                }
+            }
+        }
     },
     {
         label: 'Copy',
         icon: '',
+        props: (treeItem, menuItem, hide) => {
+            return {
+                onClick: (e) => {
+                    this.treeCM.clipboard = treeItem;
+                    hide();
+                }
+            }
+        }
     },
     {
         label: 'Paste',
         icon: '',
+        props: (treeItem, menuItem, hide) => {
+            return {
+                onClick: (e) => {
+                  console.log(e);
+                    var parent = treeItem._parent ? treeItem._parent : treeItem;
+                    var to = parent.info.pathName + (parent.info.ext == "" ? '/' + data.info.fileName : '');
+                    var clip = this.treeCM.clipboard;
+                    this.pasteItem(e, treeItem, this.treeCM.clipboard);
+                    this.popups.yesNo.show(e, {
+                        data: {
+                            title: (clip.path.ext == "" ? 'Folder' : 'File') + ' Overwrite',
+                            message: (clip.path.ext == "" ? 'Folder' : 'File') + ' in path:<br/>"' + to + '"<br/>is exist.' +
+                            '<small>Do you want to overwrite?</small>'
+                        }
+                    });
+                    hide();
+                }
+            }
+        }
     },
     '---',
     {
         label: 'Rename',
         icon: '',
+        props: (treeItem, menuItem, hide) => {
+            return {
+                onClick: (e) => {
+                    //rename
+                    //save
+                    hide();
+                }
+            }
+        }
     },
     {
         label: 'Delete',
         icon: '',
+        props: (treeItem, menuItem, hide) => {
+            return {
+                onClick: (e) => {
+                    //delete
+                    hide();
+                }
+            }
+        }
     },
 ];
+
 this.contextMenuVisible = (treeItem, menuItem) => {
     if (!menuItem) return true;
     if (typeof menuItem === 'object') {
@@ -71,12 +141,11 @@ this.contextMenuProps = (treeItem, menuItem, hide) => {
 this.query = params => {
     params.active = this.props.tree.active;
     params.info = this.props.tree.info[this.props.tree.active];
-    return this.db.query(params);
+    return this.api.query(params);
 };
 
 this.initTree = (ref) => {
-    this.db = ref;
-
+    this.api = ref;
     this.query({
         action: 'load',
     }).then(res => {
@@ -95,6 +164,38 @@ this.update = (item, data) => {
         active: this.props.tree.active,
         data: item._set(data)
     });
+}
+
+this.pasteItem = (e, item, data) => {
+    if(data) {
+        var action = data.cut ? 'move' : 'copy';
+        var parent = item._parent ? item._parent : item;
+        var to = parent.info.pathName + (parent.info.ext == "" ? '/' + data.info.fileName : '');
+        console.log(e);
+        this.query({
+            action: action,
+            path: parent.path !== '' ? parent.path.substr(1) + '/' + parent.info.relativePathname : '',
+            from: data.info.pathName,
+            to: to
+        }).then(res => {
+            console.log(res);
+            if (res == 'overwrite') {
+                console.log('harusnya');
+
+            }
+            // this.update(item._parent(), {
+            //     expanded: true,
+            //     childs: JSON.parse(res)
+            // });
+        });
+    }
+}
+
+this.deleteTreeItem = (item) => {
+    this.props.updateTree({
+        active: this.props.tree.active,
+        data: item._delete()
+    })
 }
 
 this.toggleExpand = (e, item) => {

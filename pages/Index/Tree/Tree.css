@@ -14,6 +14,10 @@
     font-size: 90%;
 }
 
+.builder-tree .tree-item-label.gray {
+    opacity: 0.6;
+}
+
 .builder-tree .tree-item-label:hover {
     background: #252E35;
 }
