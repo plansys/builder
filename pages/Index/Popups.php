@@ -18,8 +18,9 @@ class Popups extends \Yard\Page
     public function render()
     {
         return '<div>' . $this->loadFile(
-            'Popups/CreateModule.html',
-            'Popups/CreatePage.html'
-        ) . '</div>';
+                'Popups/CreateModule.html',
+                'Popups/CreatePage.html',
+                'Popups/Tooltip.html'
+            ) . '</div>';
     }
 }

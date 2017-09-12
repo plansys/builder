@@ -8,12 +8,29 @@ this.contextMenu = [
             return {
                 onClick: (e) => {
                     this.popups.createPage.show(e, {
-                        data: '/jos'
+                        data: (treeItem.hasChild ? '/' + treeItem.label : '/' + treeItem.path)
                     });
                     hide();
                 }
             }
         }
+    },
+    {
+        label: 'New Folder',
+        icon: '',
+    },
+    '---',
+    {
+        label: 'Cut',
+        icon: '',
+    },
+    {
+        label: 'Copy',
+        icon: '',
+    },
+    {
+        label: 'Paste',
+        icon: '',
     },
     '---',
     {
@@ -25,6 +42,20 @@ this.contextMenu = [
         icon: '',
     },
 ];
+this.contextMenuVisible = (treeItem, menuItem) => {
+    if (!menuItem) return true;
+    if (typeof menuItem === 'object') {
+        if (typeof menuItem.visible === 'undefined') return true;
+        else if (typeof menuItem.visible === 'function') {
+            return menuItem.visible(treeItem, menuItem);
+        }
+        else {
+            return menuItem.visible;
+        }
+    } else {
+        return true;
+    }
+}
 
 this.contextMenuProps = (treeItem, menuItem, hide) => {
     if (typeof menuItem.props === 'function') {

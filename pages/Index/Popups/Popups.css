@@ -1,3 +1,12 @@
+.tooltip {
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, .3);
+    background: #262A32;
+    box-sizing: border-box;
+    color: #d9d9d9;
+    padding: 8px 10px;
+    font-size: 90%;
+}
 
 .popup-dialog {
     border-radius: 5px;
@@ -14,7 +23,7 @@
     font-size: 100%;
     font-weight: bold;
     user-select: none;
-    cursor:default;
+    cursor: default;
 }
 
 .popup-dialog-close {
@@ -43,7 +52,7 @@
     opacity: .6;
     font-size: 90%;
     font-style: italic;
-    display:block;
+    display: block;
 }
 
 .popup-dialog-btns {
@@ -77,6 +86,7 @@
     background: rgba(255, 255, 255, .05);
     border: 2px solid rgba(255, 255, 255, .6);
 }
+
 .popup-dialog-btn:hover {
     background: rgba(255, 255, 255, .2);
 }

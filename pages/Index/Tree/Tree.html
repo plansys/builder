@@ -3,22 +3,27 @@
 
     return
     <div className="builder-tree">
-        <builder:Index.Popups ref="js: ref => this.popups = ref"></builder:Index.Popups>
+        <builder:Index.Popups ref="js: ref => this.popups = ref" />
+
         <ui:Popup name="tree-cm" position="mouse">
             <div className="tree-context-menu">
                 <For each="data.contextMenu" as="menuItem">
-                    <If condition="typeof menuItem == 'string'">
-                        <div className="tree-context-menu-itemsep"></div>
+                    <If condition="this.contextMenuVisible(data.treeItem, menuItem)">
+                        <If condition="typeof menuItem == 'string'">
+                            <div className="tree-context-menu-itemsep"></div>
+                        </If>
+                        <Else>
+                            <div className="tree-context-menu-item"
+                                 js:spread="this.contextMenuProps.bind(this)(data.treeItem, menuItem, hide)">
+                                <js>menuItem.label</js>
+                            </div>
+                        </Else>
                     </If>
-                    <Else>
-                        <div className="tree-context-menu-item"
-                             js:spread="this.contextMenuProps.bind(this)(data.treeItem, menuItem, hide)">
-                            <js>menuItem.label</js>
-                        </div>
-                    </Else>
                 </For>
             </div>
         </ui:Popup>
+
+
         <ui:Tree data="activeData" childKey="childs">
             <div className="tree-box">
                 <ui:Tree.Item>
