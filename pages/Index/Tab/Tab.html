@@ -1,8 +1,11 @@
 <js>
     let tabData = this.props.tab.data;
-
+    console.log('tab-data:');
+    console.log(this.props.tab.data);
     return
-    <ui:Tab className="builder-tab" data="tabData" onChange="js: (item, old) => { /*this.changeTab(item, old)*/ }">
+    <!--<ui:Tab className="builder-tab" data="tabData" onChange="js: (item, old) => { /*this.changeTab(item, old)*/ }">-->
+    <ui:Tab.Root className="builder-tab" data="tabData" onChange="js: function (item, old) { this.changeTab(item, old) }">
+<!--&gt;>>>>>> Stashed changes-->
         <ui:Layout.Row height="25px">
             <ui:Tab.Nav>
                 <button className="js: item.active ? 'active' : ''">
@@ -25,5 +28,5 @@
                 </Switch>
             </ui:Tab.Content>
         </ui:Layout.Row>
-    </ui:Tab>
+    </ui:Tab.Root>
 </js>
