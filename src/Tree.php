@@ -43,22 +43,28 @@ abstract class Tree
         return $fs->remove($path);
     }
 
-    public function copy($from, $to)
+    public function copy($from, $to, $overwrite = false)
     {
         $fs = new Filesystem();
         if(!$fs->exists($to)) {
             return $fs->copy($from, $to);
         } else {
+            if($overwrite) {
+                return $fs->copy($from, $to, true);
+            }
             return 'overwrite';
         }
     }
 
-    public function move($from, $to)
+    public function move($from, $to, $overwrite = false)
     {
         $fs = new Filesystem();
         if(!$fs->exists($to)) {
             return $fs->rename($from, $to);
         } else {
+            if($overwrite) {
+                return $fs->rename($from, $to, true);
+            }
             return 'overwrite';
         }
     }

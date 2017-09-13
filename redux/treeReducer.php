@@ -74,6 +74,7 @@ JS;
                     let info = {
                         ...state.info,
                     };
+                    console.log(payload);
                     info[state.active].module.active = payload;
                     
                     return { 

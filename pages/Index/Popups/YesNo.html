@@ -8,10 +8,18 @@
                 <js>data ? data.message : ''</js>
             </label>
             <div className="popup-dialog-btns">
-                <div className="popup-dialog-btn" onClick="js: hide">Yes</div>
-            </div>
-            <div className="popup-dialog-btns">
-                <div className="popup-dialog-btn" onClick="js: hide">No</div>
+                <div className="popup-dialog-btn" onClick="js: ref => {
+                            if (ref) {
+                                ref.value = 'y';
+                            }
+                            hide();
+                       }">Yes</div>
+                <div className="popup-dialog-btn" onClick="js: ref => {
+                            if (ref) {
+                                ref.value = 'n';
+                            }
+                            hide();
+                       }">No</div>
             </div>
         </div>
     </div>

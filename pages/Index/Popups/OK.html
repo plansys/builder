@@ -1,0 +1,15 @@
+<ui:Popup name="ok"
+          ref="js: ref => this.ok = ref">
+    <div className="popup-dialog create-module">
+        <div className="popup-dialog-close" onClick="js: hide">×</div>
+        <div className="popup-dialog-title"><js>data ? data.title : ''</js></div>
+        <div className="popup-dialog-content">
+            <label>
+                <js>data ? data.message : ''</js>
+            </label>
+            <div className="popup-dialog-btns">
+                <div className="popup-dialog-btn" onClick="js: hide">OK</div>
+            </div>
+        </div>
+    </div>
+</ui:Popup>

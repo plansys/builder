@@ -51,15 +51,16 @@ class Tree extends \Yard\Page
                     return $this->after_file_operation($result, $tree, @$params['path']);
                     break;
                 case "delete":
-                    $result = $tree->delete($params['path']);
+                    $result = $tree->delete($params['del']);
                     return $this->after_file_operation($result, $tree, @$params['path']);
                     break;
                 case "copy":
-                    $result = $tree->copy($params['from'], $params['to']);
+                    var_dump($params['overwrite']); die();
+                    $result = $tree->copy($params['from'], $params['to'], $params['overwrite']);
                     return $this->after_file_operation($result, $tree, @$params['path']);
                     break;
                 case "move":
-                    $result = $tree->move($params['from'], $params['to']);
+                    $result = $tree->move($params['from'], $params['to'], $params['overwrite']);
                     return $this->after_file_operation($result, $tree, @$params['path']);
                     break;
                 case "search":
@@ -86,7 +87,7 @@ class Tree extends \Yard\Page
 
     private function after_file_operation($result, $tree, $path) {
         switch ($result) {
-            case 'ok':
+            case null:
                 return $tree->expand($path);
                 break;
             default:
