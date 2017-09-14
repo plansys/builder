@@ -68,43 +68,43 @@ this.contextMenu = [
 		props: (treeItem, menuItem, hide) => {
 			return {
 				onClick: (e) => {
-					var clip = this.props.tree.copyItems.length > 0 ? this.props.tree.copyItems : this.props.tree.cutItems;
+					let clip = this.props.tree.copyItems.length > 0 ? this.props.tree.copyItems : this.props.tree.cutItems;
 					console.log(clip);
-					if(clip && treeItem == []) {
-						for(var i = 0; i < clip.length; i++) {
-							var action = clip[i].cut ? 'move' : 'copy';
-							var parent = treeItem._parent ? treeItem._parent : treeItem;
-							var relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
-							var path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
-							var from = clip[i].info.pathName;
-							var to = parent.info.pathName + (parent.info.ext == "" ? '/' + clip[i].info.fileName : '');
+					if(clip && treeItem === []) {
+						for(let i = 0; i < clip.length; i++) {
+							let action = clip[i].cut ? 'move' : 'copy';
+							let parent = treeItem._parent ? treeItem._parent : treeItem;
+							let relPath = parent.info.ext !=== '' ? '' : parent.info.relativePathname;
+							let path = parent.path !=== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
+							let from = clip[i].info.pathName;
+							let to = parent.info.pathName + (parent.info.ext === "" ? '/' + clip[i].info.fileName : '');
 							this.pasteItem(action, parent, path, from, to, false, (result) => {
 								console.log(from, to);
 								console.log(result);
-								if (result == 'overwrite') {
-									this.popups.yesNo.show(null, {
+								if (result === 'overwrite') {
+									this.popups.confirm.show(null, {
 										data: {
-											title: (clip.info.ext == "" ? 'Folder' : 'File') + ' Overwrite',
-											message: (clip.info.ext == "" ? 'Folder' : 'File') + ' in path:<br/>"' + to + '"<br/>is exist.' +
+											title: (clip.info.ext === "" ? 'Folder' : 'File') + ' Overwrite',
+											message: (clip.info.ext === "" ? 'Folder' : 'File') + ' in path:<br/>"' + to + '"<br/>is exist.' +
 											'<small>Do you want to overwrite?</small>'
 										}
 									});
-									if (this.popups.yesNo.value == 'y') {
+									if (this.popups.confirm.value === 'y') {
 										this.pasteItem(action, parent, path, from, to, true, (result) => {
-											if (result != 'ok') {
-												this.popups.ok.show(null, {
+											if (result !== 'ok') {
+												this.popups.info.show(null, {
 													data: {
-														title: (clip.info.ext == "" ? 'Folder' : 'File') + ' Error',
+														title: (clip.info.ext === "" ? 'Folder' : 'File') + ' Error',
 														message: result
 													}
 												});
 											}
 										});
 									}
-								} else if (result != 'ok') {
-									this.popups.ok.show(null, {
+								} else if (result !== 'ok') {
+									this.popups.info.show(null, {
 										data: {
-											title: (clip.info.ext == "" ? 'Folder' : 'File') + ' Error',
+											title: (clip.info.ext === "" ? 'Folder' : 'File') + ' Error',
 											message: result
 										}
 									});
@@ -137,22 +137,22 @@ this.contextMenu = [
 		props: (treeItem, menuItem, hide) => {
 			return {
 				onClick: (e) => {
-					var del = treeItem.info.pathName;
-					var parent = treeItem._parent ? treeItem._parent : treeItem;
-					var relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
-					var path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
-					this.popups.yesNo.show(null, {
+					let del = treeItem.info.pathName;
+					let parent = treeItem._parent ? treeItem._parent : treeItem;
+					let relPath = parent.info.ext !=== '' ? '' : parent.info.relativePathname;
+					let path = parent.path !=== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
+					this.popups.confirm.show(null, {
 						data: {
-							title: 'Delete ' + (treeItem.info.ext == "" ? 'Folder' : 'File'),
-							message: (treeItem.info.ext == "" ? 'Folder' : 'File') + ' at path:<br/>"' + del + '"<br/> are about to delete.' +
+							title: 'Delete ' + (treeItem.info.ext === "" ? 'Folder' : 'File'),
+							message: (treeItem.info.ext === "" ? 'Folder' : 'File') + ' at path:<br/>"' + del + '"<br/> are about to delete.' +
 							'<small>Do you want to delete?</small>'
 						}
 					});
 					this.deleteItem(del, path, parent, (res) => {
-						if(res != 'ok') {
-							this.popups.ok.show(null, {
+						if(res !== 'ok') {
+							this.popups.info.show(null, {
 								data: {
-									title: (clip.info.ext == "" ? 'Folder' : 'File') + ' Error',
+									title: (clip.info.ext === "" ? 'Folder' : 'File') + ' Error',
 									message: res
 								}
 							});
@@ -228,7 +228,7 @@ this.selectItem = (treeItem) => {
 
 this.isItemSelected = (treeItem) => {
 	let select = this.props.tree.selectedItems;
-	for(var i = 0; i < select.length; i++) {
+	for(let i = 0; i < select.length; i++) {
 		if(is.shallowEqual(select[i], treeItem)) {
 			return true;
 		}
@@ -238,7 +238,7 @@ this.isItemSelected = (treeItem) => {
 
 this.isItemCutted = (treeItem) => {
 	let cut = this.props.tree.cutItems;
-	for(var i = 0; i < cut.length; i++) {
+	for(let i = 0; i < cut.length; i++) {
 		if(is.shallowEqual(cut[i], treeItem)) {
 			return true;
 		}
@@ -254,8 +254,8 @@ this.pasteItem = (action, parent, path, from, to, overwrite, cb) => {
 		to: to,
 		overwrite: overwrite
 	}).then(res => {
-		var result = res;
-		var isJSON = false;
+		let result = res;
+		let isJSON = false;
 		try {
 			result = JSON.parse(res);
 			isJSON = true;
@@ -279,8 +279,8 @@ this.deleteItem = (del, path, parent, cb) => {
 		del: del,
 		path: path
 	}).then(res => {
-		var result = res;
-		var isJSON = false;
+		let result = res;
+		let isJSON = false;
 		try {
 			result = JSON.parse(res);
 			isJSON = true;

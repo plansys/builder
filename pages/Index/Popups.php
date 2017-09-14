@@ -20,9 +20,9 @@ class Popups extends \Yard\Page
         return '<div>' . $this->loadFile(
                 'Popups/CreateNew.html',
                 'Popups/CreateModule.html',
-                'Popups/OK.html',
+                'Popups/Info.html',
                 'Popups/Tooltip.html',
-                'Popups/YesNo.html'
+                'Popups/Confirm.html'
             ) . '</div>';
     }
 }
