@@ -20,7 +20,6 @@ class Tree extends \Yard\Page
             'load' => 'builder:tree.load',
             'updateTree' => 'builder:tree.updateTree',
             'openTab' => 'builder:tab.openTab',
-            'updateTab' => 'builder:tab.updateTab'
         ];
     }
 

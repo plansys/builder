@@ -4,7 +4,7 @@
 
 .builder-tree .tree-item {
     padding: 0;
-    cursor: pointer;
+    cursor: default;
     user-select: none;
 }
 

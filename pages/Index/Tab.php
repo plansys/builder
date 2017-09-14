@@ -18,7 +18,7 @@ class Tab extends \Yard\Page
     {
         return [
             'openTab' => 'builder:tab.openTab',
-            'updateTab' => 'builder:tab.updateTab'
+            'updateTabs' => 'builder:tab.updateTabs',
         ];
     }
 

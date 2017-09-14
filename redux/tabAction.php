@@ -8,8 +8,8 @@ class tabAction extends \Yard\Redux\Action {
                 'params' => "payload",
                 'payload' => "payload"
             ],
-            'updateTab' => [
-                'type' => "builder/tab/updateTab",
+            'updateTabs' => [
+                'type' => "builder/tab/updateTabs",
                 'params' => "payload",
                 'payload' => "payload"
             ],

@@ -6,44 +6,46 @@ class tabReducer extends \Yard\Redux\Reducer
     {
         return <<<JS
 return {
-    data: [ {
-        type: 'pages',
-        active: false,
-        saved: true,
-        label: 'Page1',
-        tree: {},
-        history: [],
-        content: [
-            {
-                type: 'html',
-                active: false,
-                file: null,
-                value: '<div class="test">Content</div>'
-            },
-            {
-                type: 'js',
-                active: false,
-                file: null,
-                value: 'this.load = (ref) => { return true; }'
-            },
-            {
-                type: 'css',
-                active: false,
-                file: null,
-                value: ''
-            },
-            {
-                type: 'setting',
-                active: false,
-                value: []
-            },
-            {
-                type: 'redux',
-                active: false,
-                value: []
-            }
-        ]
-    } ]
+    data: [
+        // {
+        //     type: 'pages',
+        //     active: false,
+        //     saved: true,
+        //     label: 'Page1',
+        //     tree: {},
+        //     history: [],
+        //     content: [
+        //         {
+        //             type: 'html',
+        //             active: false,
+        //             file: null,
+        //             value: '<div class="test">Content</div>'
+        //         },
+        //         {
+        //             type: 'js',
+        //             active: false,
+        //             file: null,
+        //             value: 'this.load = (ref) => { return true; }'
+        //         },
+        //         {
+        //             type: 'css',
+        //             active: false,
+        //             file: null,
+        //             value: ''
+        //         },
+        //         {
+        //             type: 'setting',
+        //             active: false,
+        //             value: []
+        //         },
+        //         {
+        //             type: 'redux',
+        //             active: false,
+        //             value: []
+        //         }
+        //     ]
+        // } 
+    ]
 }
 JS;
     }
@@ -55,38 +57,32 @@ JS;
                 'type' => 'builder/tab/openTab',
                 'reducer' => 'js: function(state, payload) {
                     let data = state.data;
-                    
-                    var canPush = true;
+                    let canPush = true;
                     for(var i = 0; i < data.length; i++) {
                         data[i].active = false;
-                        if(data[i].label == payload.data.label) {
+                        if(data[i].label == payload.label) {
                             canPush = false;
                             data[i].active = true;
                         }
                     }
                     
                     if(canPush) {
-                        payload.data.active = true;
-                        data.push(payload.data);
+                        payload.active = true;
+                        data.push(payload);
                     }
                     
                     return {
                         ...state,
-                        data
+                        data,
                     }
                 }'
             ],
             [
-                'type' => 'builder/tab/updateTab',
+                'type' => 'builder/tab/updateTabs',
                 'reducer' => 'js: function(state, payload) {
-                    let data = {
-                        ...state.data,
-                    };
-                    data = payload.data;
-                    
                     return {
                         ...state,
-                        data
+                        data: payload
                     }
                 }'
             ],

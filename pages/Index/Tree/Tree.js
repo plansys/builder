@@ -304,19 +304,14 @@ this.toggleExpand = (e, item) => {
 };
 
 this.open = item => {
-	this.query({
-		action: 'open',
-		itemPath: item.path,
-		itemLabel: item.label
-	}).then(res => {
-		try {
-			let result = JSON.parse(res);
-			this.props.openTab({
-				data: result,
-				treeItem: item
-			});
-		} catch (e) {
-			console.log('error in json');
-		}
-	});
+    this.query({
+        action: 'open',
+        itemPath: item.path,
+        itemLabel: item.label
+    }).then(res => {
+        let result = JSON.parse(res);
+        result.treeItem = item;
+
+        this.props.openTab(result);
+    });
 };

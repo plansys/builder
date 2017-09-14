@@ -34,8 +34,7 @@
                                 <For each="moduleList" as="m">
                                     <option value="js: m">
                                         <js>
-                                            let plansys = this.props.tree.plansysModules.indexOf(m) >= 0 ? '[plansys] '
-                                            : '';
+                                            let plansys = this.props.tree.plansysModules.indexOf(m) >= 0 ? '[plansys] ' : '';
                                             return plansys + (m || 'default')
                                         </js>
                                     </option>
@@ -53,7 +52,10 @@
                         <ui:Layout.Col>
                             <input type="text" spellCheck="false" placeholder="js: 'Search ' + activeLabel"/>
                         </ui:Layout.Col>
-                        <ui:Layout.Col data-popup-click:create-page="/"
+                        <ui:Layout.Col data-popup-click:create-new="js: {
+                                            label: 'Page',
+                                            path: '/'
+                                        }"
                                        data-popup-hover:tooltip="Create Page"
                                        width="50px" halign="center" className="button">
                             <img src="js:this.url + 'Img/plus.svg'" className="icon"/>
@@ -66,19 +68,7 @@
                 <ui:Layout.Separator></ui:Layout.Separator>
                 <ui:Layout.Col>
                     <ui:Layout.Row>
-                        <ui:Popup name="pku" ref="js: ref => this.pku = ref" position="mouse">
-                            <div>PKU PKU PKU
-                                <button onClick="js: e=>{ alert(data); }">alert
-                                    <js>data</js>
-                                </button>
-                            </div>
-                        </ui:Popup>
-                        <div>
-                            <button onClick="js: e => {
-                                this.pku.show(e);
-                            }">JSO</button>
-                        </div>
-                        <!--<builder:Index.Tab/>-->
+                        <builder:Index.Tab/>
                     </ui:Layout.Row>
                 </ui:Layout.Col>
             </ui:Layout.Row>
