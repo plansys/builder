@@ -1,40 +1,63 @@
 <js>
     let activeData = this.props.tree.data[this.props.tree.active];
+    console.log('update');
 
     return
-    <div className="builder-tree">
+    <div className="builder-tree"
+         onContextMenu="js: (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.treeCM.show(e, {
+                    contextMenu: this.contextMenu,
+                    treeItem: 'root',
+                    popups: this.popups
+                 });
+             }">
         <builder:Index.Popups ref="js: ref => this.popups = ref" />
 
         <ui:Popup name="tree-cm" position="mouse" ref="js: ref => this.treeCM = ref">
-            <div className="tree-context-menu">
-                <For each="data.contextMenu" as="menuItem">
-                    <If condition="this.contextMenuVisible(data.treeItem, menuItem)">
-                        <If condition="typeof menuItem == 'string'">
-                            <div className="tree-context-menu-itemsep"></div>
-                        </If>
-                        <Else>
-                            <div className="tree-context-menu-item"
-                                 js:spread="this.contextMenuProps.bind(this)(data.treeItem, menuItem, hide)">
-                                <js>menuItem.label</js>
-                            </div>
-                        </Else>
+            <js>
+                let treeItem = data ? [data.treeItem] : [];
+                if(treeItem == 'root') {
+                    treeItem = this.props.tree.selectedItem;
+                }
+
+            return  <div className="tree-context-menu">
+            <For each="data.contextMenu" as="menuItem">
+                <If condition="this.contextMenuVisible(treeItem, menuItem)">
+                    <If condition="typeof menuItem == 'string'">
+                        <div className="tree-context-menu-itemsep"></div>
                     </If>
-                </For>
-            </div>
+                    <Else>
+                        <div className="tree-context-menu-item"
+                             js:spread="this.contextMenuProps.bind(this)(treeItem, menuItem, hide)">
+                            <js>menuItem.label</js>
+                        </div>
+                    </Else>
+                </If>
+            </For>
+        </div>
+</js>
         </ui:Popup>
 
         <ui:Tree data="activeData" childKey="childs">
             <div className="tree-box">
                 <ui:Tree.Item>
                     <div className="tree-item"
-                         data-popup-rclick:tree-cm="js: {
-                            contextMenu: this.contextMenu,
-                            treeItem: item,
-                            popups: this.popups
+                         onContextMenu="js: (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.selectItem(item);
+                            this.treeCM.show(e, {
+                                contextMenu: this.contextMenu,
+                                treeItem: item,
+                                popups: this.popups
+                             });
                          }"
-                         onClick="js: (e) => { this.toggleExpand(e, item) }">
+                         onClick="js: (e) => { this.toggleExpand(e, item); this.selectItem(item); }">
 
-                        <div className="js: 'tree-item-label' + (item.cut ? ' gray' : '')">
+                        <div className="js: 'tree-item-label' + (this.isItemCutted(item) ? ' cut' : '') +
+                         (this.isItemSelected(item) ? ' select' : '')">
                             <div className="tree-item-span" style="js: { width: (item._depth * 15) + 'px'}"></div>
 
                             <div className="tree-item-icon">

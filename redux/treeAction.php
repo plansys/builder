@@ -18,6 +18,21 @@ class treeAction extends \Yard\Redux\Action {
                 'params' => "payload",
                 'payload' => "payload"
             ],
+            'selectItem' => [
+                'type' => "builder/tree/selectItem",
+                'params' => "payload",
+                'payload' => "payload"
+            ],
+            'cutItem' => [
+                'type' => "builder/tree/cutItem",
+                'params' => "payload",
+                'payload' => "payload"
+            ],
+            'copyItem' => [
+                'type' => "builder/tree/copyItem",
+                'params' => "payload",
+                'payload' => "payload"
+            ]
         ];
     }
 }

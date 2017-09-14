@@ -19,6 +19,9 @@ class Tree extends \Yard\Page
         return [
             'load' => 'builder:tree.load',
             'updateTree' => 'builder:tree.updateTree',
+            'selectItem' => 'builder:tree.selectItem',
+            'cutItem' => 'builder:tree.cutItem',
+            'copyItem' => 'builder:tree.copyItem',
             'openTab' => 'builder:tab.openTab',
         ];
     }
@@ -54,7 +57,6 @@ class Tree extends \Yard\Page
                     return $this->after_file_operation($result, $tree, @$params['path']);
                     break;
                 case "copy":
-                    var_dump($params['overwrite']); die();
                     $result = $tree->copy($params['from'], $params['to'], $params['overwrite']);
                     return $this->after_file_operation($result, $tree, @$params['path']);
                     break;

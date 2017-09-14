@@ -8,6 +8,9 @@ class treeReducer extends \Yard\Redux\Reducer
 return {
     active: 'pages',
     plansysModules: ['yard','ui','db','user','builder','jasper'],
+    selectedItems: [],
+    cutItems: [],
+    copyItems: [],
     info: {
         pages: {
             module: {
@@ -57,11 +60,12 @@ JS;
             [
                 'type' => 'builder/tree/updateTree',
                 'reducer' => 'js: function(state, payload) {
+
                     let data = {
                         ...state.data,
-                    };
+                    };                                                   
+
                     data[payload.active] = payload.data;
-                    
                     return {
                         ...state,
                         data
@@ -74,15 +78,41 @@ JS;
                     let info = {
                         ...state.info,
                     };
-                    console.log(payload);
-                    info[state.active].module.active = payload;
                     
+                    info[state.active].module.active = payload;
                     return { 
                         ...state,
                         info
                     }
                 }'
             ],
+            [
+                'type' => 'builder/tree/selectItem',
+                'reducer' => 'js: function(state, payload) {
+                    return { 
+                        ...state,
+                        selectedItems: payload
+                    }
+                }'
+            ],
+            [
+                'type' => 'builder/tree/cutItem',
+                'reducer' => 'js: function(state, payload) {
+                    return { 
+                        ...state,
+                        cutItems: payload
+                    }
+                }'
+            ],
+            [
+                'type' => 'builder/tree/copyItem',
+                'reducer' => 'js: function(state, payload) {
+                    return { 
+                        ...state,
+                        copyItems: payload
+                    }
+                }'
+            ]
         ];
     }
 }

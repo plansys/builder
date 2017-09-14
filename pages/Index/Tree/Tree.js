@@ -42,9 +42,8 @@ this.contextMenu = [
 		props: (treeItem, menuItem, hide) => {
 			return {
 				onClick: (e) => {
-					var module = this.props.tree.info[this.props.tree.active].module.active;
-					this.update(treeItem, {cut: true, module: module});
-					this.treeCM.clipboard = treeItem;
+					console.log(this.props);
+					this.props.cutItem(treeItem);
 					hide();
 				}
 			}
@@ -56,14 +55,8 @@ this.contextMenu = [
 		props: (treeItem, menuItem, hide) => {
 			return {
 				onClick: (e) => {
-					var module = this.props.tree.info[this.props.tree.active].module.active;
-					if(this.treeCM.clipboard) {
-						if(this.treeCM.clipboard.module == module) {
-							this.update(this.treeCM.clipboard, {cut: false});
-						}
-					}
-					this.update(treeItem, {cut: false, module: module});
-					this.treeCM.clipboard = treeItem;
+					this.props.cutItem([]);
+					this.props.copyItem(treeItem);
 					hide();
 				}
 			}
@@ -75,44 +68,49 @@ this.contextMenu = [
 		props: (treeItem, menuItem, hide) => {
 			return {
 				onClick: (e) => {
-					var clip = this.treeCM.clipboard;
-					if(clip) {
-						var action = clip.cut ? 'move' : 'copy';
-						var parent = treeItem._parent ? treeItem._parent : treeItem;
-						var relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
-						var path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
-						var from = clip.info.pathName;
-						var to = parent.info.pathName + (parent.info.ext == "" ? '/' + clip.info.fileName : '');
-						this.pasteItem(action, parent, path, from, to, false, (result) => {
-							if(result == 'overwrite') {
-								this.popups.yesNo.show(null, {
-									data: {
-										title: (clip.info.ext == "" ? 'Folder' : 'File') + ' Overwrite',
-										message: (clip.info.ext == "" ? 'Folder' : 'File') + ' in path:<br/>"' + to + '"<br/>is exist.' +
-										'<small>Do you want to overwrite?</small>'
+					var clip = this.props.tree.copyItems.length > 0 ? this.props.tree.copyItems : this.props.tree.cutItems;
+					console.log(clip);
+					if(clip && treeItem == []) {
+						for(var i = 0; i < clip.length; i++) {
+							var action = clip[i].cut ? 'move' : 'copy';
+							var parent = treeItem._parent ? treeItem._parent : treeItem;
+							var relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
+							var path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
+							var from = clip[i].info.pathName;
+							var to = parent.info.pathName + (parent.info.ext == "" ? '/' + clip[i].info.fileName : '');
+							this.pasteItem(action, parent, path, from, to, false, (result) => {
+								console.log(from, to);
+								console.log(result);
+								if (result == 'overwrite') {
+									this.popups.yesNo.show(null, {
+										data: {
+											title: (clip.info.ext == "" ? 'Folder' : 'File') + ' Overwrite',
+											message: (clip.info.ext == "" ? 'Folder' : 'File') + ' in path:<br/>"' + to + '"<br/>is exist.' +
+											'<small>Do you want to overwrite?</small>'
+										}
+									});
+									if (this.popups.yesNo.value == 'y') {
+										this.pasteItem(action, parent, path, from, to, true, (result) => {
+											if (result != 'ok') {
+												this.popups.ok.show(null, {
+													data: {
+														title: (clip.info.ext == "" ? 'Folder' : 'File') + ' Error',
+														message: result
+													}
+												});
+											}
+										});
 									}
-								});
-								if(this.popups.yesNo.value == 'y') {
-									this.pasteItem(action, parent, path, from, to, true, (result) => {
-										if(result != 'ok') {
-											this.popups.ok.show(null, {
-												data: {
-													title: (clip.info.ext == "" ? 'Folder' : 'File') + ' Error',
-													message: result
-												}
-											});
+								} else if (result != 'ok') {
+									this.popups.ok.show(null, {
+										data: {
+											title: (clip.info.ext == "" ? 'Folder' : 'File') + ' Error',
+											message: result
 										}
 									});
 								}
-							} else if(result != 'ok') {
-								this.popups.ok.show(null, {
-									data: {
-										title: (clip.info.ext == "" ? 'Folder' : 'File') + ' Error',
-										message: result
-									}
-								});
-							}
-						});
+							});
+						}
 					}
 					hide();
 				}
@@ -219,6 +217,33 @@ this.update = (item, data) => {
 		active: this.props.tree.active,
 		data: item._set(data)
 	});
+};
+
+this.selectItem = (treeItem) => {
+	let select = this.props.tree.selectedItems;
+	select = [treeItem];
+	this.props.selectItem(select);
+	this.update(treeItem, {});
+};
+
+this.isItemSelected = (treeItem) => {
+	let select = this.props.tree.selectedItems;
+	for(var i = 0; i < select.length; i++) {
+		if(is.shallowEqual(select[i], treeItem)) {
+			return true;
+		}
+	}
+	return false;
+};
+
+this.isItemCutted = (treeItem) => {
+	let cut = this.props.tree.cutItems;
+	for(var i = 0; i < cut.length; i++) {
+		if(is.shallowEqual(cut[i], treeItem)) {
+			return true;
+		}
+	}
+	return false;
 };
 
 this.pasteItem = (action, parent, path, from, to, overwrite, cb) => {
