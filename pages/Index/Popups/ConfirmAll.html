@@ -9,27 +9,19 @@
             </label>
             <div className="popup-dialog-btns">
                 <div className="popup-dialog-btn" onClick="js: ref => {
-                            if (ref) {
-                                ref.value = 'ya';
-                            }
+                            resolve('ya');
                             hide();
                        }">Yes to All</div>
                 <div className="popup-dialog-btn" onClick="js: ref => {
-                            if (ref) {
-                                ref.value = 'y';
-                            }
+                            resolve('y');
                             hide();
                        }">Yes</div>
                 <div className="popup-dialog-btn" onClick="js: ref => {
-                            if (ref) {
-                                ref.value = 'na';
-                            }
+                            resolve('na');
                             hide();
                        }">No to All</div>
                 <div className="popup-dialog-btn" onClick="js: ref => {
-                            if (ref) {
-                                ref.value = 'n';
-                            }
+                            resolve('n');
                             hide();
                        }">No</div>
             </div>

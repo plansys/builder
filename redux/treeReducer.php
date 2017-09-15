@@ -8,8 +8,8 @@ class treeReducer extends \Yard\Redux\Reducer
 return {
     active: 'pages',
     plansysModules: ['yard','ui','db','user','builder','jasper'],
+    rootPath: null,
     selectedItems: [],
-    shiftedItem: null,
     cutItems: [],
     copyItems: [],
     info: {

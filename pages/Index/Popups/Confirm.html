@@ -9,15 +9,11 @@
             </label>
             <div className="popup-dialog-btns">
                 <div className="popup-dialog-btn" onClick="js: ref => {
-                            if (ref) {
-                                ref.value = 'y';
-                            }
+                            resolve('y');
                             hide();
                        }">Yes</div>
                 <div className="popup-dialog-btn" onClick="js: ref => {
-                            if (ref) {
-                                ref.value = 'n';
-                            }
+                            resolve('n');
                             hide();
                        }">No</div>
             </div>
