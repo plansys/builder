@@ -54,7 +54,7 @@
                                 popups: this.popups
                              });
                          }"
-                         onClick="js: (e) => { this.toggleExpand(e, item); this.selectItem(item); }">
+                         onClick="js: (e) => { this.toggleExpand(e, item); this.selectItem(e, item); }">
 
                         <div className="js: 'tree-item-label' + (this.isItemCutted(item) ? ' cut' : '') +
                          (this.isItemSelected(item) ? ' select' : '')">

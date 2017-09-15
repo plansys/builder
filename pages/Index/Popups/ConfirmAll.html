@@ -1,5 +1,5 @@
-<ui:Popup name="confirm"
-          ref="js: ref => this.confirm = ref">
+<ui:Popup name="confirm-all"
+          ref="js: ref => this.confirmAll = ref">
     <div className="popup-dialog create-module">
         <div className="popup-dialog-close" onClick="js: hide">×</div>
         <div className="popup-dialog-title"><js>data ? data.title : ''</js></div>
@@ -10,10 +10,22 @@
             <div className="popup-dialog-btns">
                 <div className="popup-dialog-btn" onClick="js: ref => {
                             if (ref) {
+                                ref.value = 'ya';
+                            }
+                            hide();
+                       }">Yes to All</div>
+                <div className="popup-dialog-btn" onClick="js: ref => {
+                            if (ref) {
                                 ref.value = 'y';
                             }
                             hide();
                        }">Yes</div>
+                <div className="popup-dialog-btn" onClick="js: ref => {
+                            if (ref) {
+                                ref.value = 'na';
+                            }
+                            hide();
+                       }">No to All</div>
                 <div className="popup-dialog-btn" onClick="js: ref => {
                             if (ref) {
                                 ref.value = 'n';

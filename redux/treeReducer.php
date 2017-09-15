@@ -9,6 +9,7 @@ return {
     active: 'pages',
     plansysModules: ['yard','ui','db','user','builder','jasper'],
     selectedItems: [],
+    shiftedItem: null,
     cutItems: [],
     copyItems: [],
     info: {
