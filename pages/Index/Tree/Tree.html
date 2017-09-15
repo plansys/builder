@@ -13,24 +13,32 @@
                  });
              }"
     >
-        <builder:Index.Popups ref="js: ref => this.popups = ref" />
+        <builder:Index.Popups ref="js: ref => this.popups = ref"/>
 
         <ui:Popup name="tree-cm" position="mouse" ref="js: ref => this.treeCM = ref">
-            <div className="context-menu">
-                <For each="data.contextMenu" as="menuItem">
-                    <If condition="this.contextMenuVisible(treeItem, menuItem)">
-                        <If condition="typeof menuItem == 'string'">
-                            <div className="context-menu-itemsep"></div>
+            <js>
+                let treeItem = data ? [data.treeItem] : [];
+                if(treeItem == 'root') {
+                    treeItem = this.props.tree.selectedItem;
+                }
+
+                return
+                <div className="context-menu">
+                    <For each="data.contextMenu" as="menuItem">
+                        <If condition="this.contextMenuVisible(treeItem, menuItem)">
+                            <If condition="typeof menuItem == 'string'">
+                                <div className="context-menu-itemsep"></div>
+                            </If>
+                            <Else>
+                                <div className="context-menu-item"
+                                     js:spread="this.contextMenuProps.bind(this)(treeItem, menuItem, hide)">
+                                    <js>menuItem.label</js>
+                                </div>
+                            </Else>
                         </If>
-                        <Else>
-                            <div className="context-menu-item"
-                                 js:spread="this.contextMenuProps.bind(this)(treeItem, menuItem, hide)">
-                                <js>menuItem.label</js>
-                            </div>
-                        </Else>
-                    </If>
-                </For>
-            </div>
+                    </For>
+                </div>
+            </js>
         </ui:Popup>
 
         <ui:Tree data="activeData" childKey="childs">
