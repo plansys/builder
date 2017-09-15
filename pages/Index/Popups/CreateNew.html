@@ -9,6 +9,7 @@
                             if (ref) {
                                 ref.value = '';
                                 ref.focus();
+                                this.createNewInput = ref;
                             }
                        }"
                        spellCheck="false"
@@ -18,7 +19,7 @@
             </label>
             <div className="popup-dialog-btns">
                 <div className="popup-dialog-btn" onClick="js: (e) => {
-                    resolve(ref.value);
+                    resolve(this.createNewInput.value);
                     hide();
                 }">OK</div>
             </div>
