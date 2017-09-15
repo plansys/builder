@@ -1,6 +1,5 @@
 <js>
     let activeData = this.props.tree.data[this.props.tree.active];
-    console.log('update');
 
     return
     <div className="builder-tree"
@@ -22,22 +21,23 @@
                     treeItem = this.props.tree.selectedItem;
                 }
 
-            return  <div className="tree-context-menu">
-            <For each="data.contextMenu" as="menuItem">
-                <If condition="this.contextMenuVisible(treeItem, menuItem)">
-                    <If condition="typeof menuItem == 'string'">
-                        <div className="tree-context-menu-itemsep"></div>
-                    </If>
-                    <Else>
-                        <div className="tree-context-menu-item"
-                             js:spread="this.contextMenuProps.bind(this)(treeItem, menuItem, hide)">
-                            <js>menuItem.label</js>
-                        </div>
-                    </Else>
-                </If>
-            </For>
-        </div>
-</js>
+                return
+                <div className="context-menu">
+                    <For each="data.contextMenu" as="menuItem">
+                        <If condition="this.contextMenuVisible(treeItem, menuItem)">
+                            <If condition="typeof menuItem == 'string'">
+                                <div className="context-menu-itemsep"></div>
+                            </If>
+                            <Else>
+                                <div className="context-menu-item"
+                                     js:spread="this.contextMenuProps.bind(this)(treeItem, menuItem, hide)">
+                                    <js>menuItem.label</js>
+                                </div>
+                            </Else>
+                        </If>
+                    </For>
+                </div>
+            </js>
         </ui:Popup>
 
         <ui:Tree data="activeData" childKey="childs">

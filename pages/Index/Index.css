@@ -93,3 +93,32 @@
 .plus {
     width: 14px;
 }
+
+
+.context-menu {
+    width: 200px;
+    border-radius: 5px;
+    font-size: 90%;
+    padding: 5px 0;
+    background: white;
+    color: #495A5E;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: default;
+    user-select: none;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .4);
+}
+
+.context-menu-itemsep {
+    margin: 3px 18px;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+.context-menu-item {
+    padding: 6px 20px;
+}
+
+.context-menu-item:hover {
+    background: rgba(0, 0, 0, .1);
+}

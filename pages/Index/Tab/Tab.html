@@ -2,10 +2,33 @@
     let tabData = this.props.tab.data;
     return
     <ui:Tab ref="js: ref => this.tab = ref " className="builder-tab" data="tabData">
+        <js>
+            return
+            <ui:Popup name="tab-cm" position="mouse" ref="ref => this.tabCM = ref">
+                <div className="context-menu">
+                    <For each="data.contextMenu" as="menuItem">
+                        <If condition="typeof menuItem == 'string'">
+                            <div className="context-menu-itemsep"></div>
+                        </If>
+                        <Else>
+                            <div className="context-menu-item"
+                                 js:spread="this.contextMenuProps.bind(this)(data.tabItem, menuItem, hide)">
+                                <js>menuItem.label</js>
+                            </div>
+                        </Else>
+                    </For>
+                </div>
+            </ui:Popup>
+        </js>
+
         <ui:Layout.Row className='builder-tab-labelbox' valign="bottom" height="50px">
             <ui:Tab.Nav>
-                <div onClick='js: e => { this.openTab(item) }'
-                     className="js: 'builder-tab-label' + (item.active ? ' active' : '') ">
+                <div onClick='js: () => { this.openTab(item) }'
+                     className="js: 'builder-tab-label' + (item.active ? ' active' : '') "
+                     data-popup-rclick:tab-cm="js: {
+                        contextMenu: this.contextMenu,
+                        tabItem: item
+                     }">
                     <js>item.label</js>
                     <div className="builder-tab-close" onClick="js: this.closeTab.bind(this,item) ">×</div>
                 </div>
