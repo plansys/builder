@@ -42,9 +42,7 @@ this.contextMenu = [
 		props: (treeItem, menuItem, hide) => {
 			return {
 				onClick: (e) => {
-					console.log(this.props);
-					this.props.copyItem([]);
-					this.props.cutItem(treeItem);
+					this.cutCommand(treeItem);
 					hide();
 				}
 			}
@@ -56,8 +54,7 @@ this.contextMenu = [
 		props: (treeItem, menuItem, hide) => {
 			return {
 				onClick: (e) => {
-					this.props.cutItem([]);
-					this.props.copyItem(treeItem);
+					this.copyCommand(treeItem);
 					hide();
 				}
 			}
@@ -69,12 +66,7 @@ this.contextMenu = [
 		props: (treeItem, menuItem, hide) => {
 			return {
 				onClick: (e) => {
-					let clip = this.props.tree.copyItems.length > 0 ? this.props.tree.copyItems : this.props.tree.cutItems;
-					let action = this.props.tree.copyItems.length > 0 ? 'copy' : 'move';
-					console.log(clip);
-					if (clip && treeItem != 'root') {
-						this.doPasteItem(treeItem, clip, action);
-					}
+					this.pasteCommand(treeItem);
 					hide();
 				}
 			}
@@ -182,6 +174,58 @@ this.update = (item, data) => {
     });
 };
 
+// this.eventListener = (e, treeItem) => {
+// 	console.log(e.target);
+// 	e.target.addEventListener('keydown', (e) => { this.controlCommand(e, treeItem); });
+// };
+
+window.addEventListener('keydown', (e) => {
+	var select = this.props.tree.selectedItems;
+	console.log(this.props);
+	this.controlCommand(e, select[select.length - 1]);
+});
+
+this.controlCommand = (e, treeItem) => {
+	console.log('control');
+	var key = e.which || e.keyCode; // keyCode detection
+	var ctrl = e.ctrlKey ? e.ctrlKey : ((key === 17) ? true : false);
+
+	//ctrl + x
+	if(key == 88 && ctrl) {
+		console.log('ctrl + x');
+		this.cutCommand(treeItem);
+	}
+	//ctrl + c
+	if(key == 67 && ctrl) {
+		console.log('ctrl + c');
+		this.copyCommand(treeItem);
+	}
+	//ctrl + v
+	if(key == 86 && ctrl) {
+		console.log('ctrl + v');
+		this.pasteCommand(treeItem);
+	}
+};
+
+this.cutCommand = (treeItem) => {
+	this.props.copyItem([]);
+	this.props.cutItem(treeItem);
+};
+
+this.copyCommand = (treeItem) => {
+	this.props.cutItem([]);
+	this.props.copyItem(treeItem);
+};
+
+this.pasteCommand = (treeItem) => {
+	let clip = this.props.tree.copyItems.length > 0 ? this.props.tree.copyItems : this.props.tree.cutItems;
+	let action = this.props.tree.copyItems.length > 0 ? 'copy' : 'move';
+	console.log(clip);
+	if (clip && treeItem != 'root') {
+		this.doPasteItem(treeItem, clip, action);
+	}
+}
+
 this.selectItem = (e, treeItem) => {
 	let select = this.props.tree.selectedItems;
 	let last_select = select[select.length - 1];
@@ -196,7 +240,6 @@ this.selectItem = (e, treeItem) => {
 	} else {
 		select = [treeItem];
 	}
-	console.log(select);
 	this.props.selectItem(select);
 };
 
@@ -273,11 +316,23 @@ this.isTreeEqual = (a, b) => {
 	return true;
 };
 
+this.getTreePaths = (treeItems) => {
+	var paths = [];
+	for(var i = 0; i < treeItems.length; i++) {
+		if(treeItems[i].info) {
+			if(treeItems[i].info.pathName) {
+				paths.push(treeItems[i].info.pathName);
+			}
+		}
+	}
+	return paths;
+}
+
 this.doPasteItem = (treeItem, item, action, overwrite) => {
 	let parent = treeItem._parent ? treeItem._parent : treeItem;
 	let relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
 	let path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
-	let from = [];//clip[i].info.pathName;
+	let from = this.getTreePaths(item);
 	let to = parent.info.pathName + (parent.info.ext === "" ? '/' + clip[i].info.fileName : '');
 	this.pasteItem(action, parent, path, to, overwrite, (result) => {
 		console.log(from, to);
@@ -291,17 +346,18 @@ this.doPasteItem = (treeItem, item, action, overwrite) => {
 				}
 			});
 			if (this.popups.confirm.value === 'y') {
-
-				// this.pasteItem(action, parent, path, from, to, true, (result) => {
-				// 	if (result !== 'ok') {
-				// 		this.popups.info.show(null, {
-				// 			data: {
-				// 				title: (clip.info.ext === "" ? 'Folder' : 'File') + ' Error',
-				// 				message: result
-				// 			}
-				// 		});
-				// 	}
-				// });
+				this.doPasteItem(treeItem, item, action, 'y');
+			}
+		} else if (result === 'overwrite-all') {
+			this.popups.confirmAll.show(null, {
+				data: {
+					title: (clip.info.ext === "" ? 'Folder' : 'File') + ' Overwrite All',
+					message: (clip.info.ext === "" ? 'Folder' : 'File') + ' in path:<br/>"' + to + '"<br/>is exist.' +
+					'<small>Do you want to overwrite?</small>'
+				}
+			});
+			if (this.popups.confirm.value === 'y') {
+				this.doPasteItem(treeItem, item, action, 'y');
 			}
 		} else if (result !== 'ok') {
 			this.popups.info.show(null, {

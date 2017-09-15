@@ -17,7 +17,9 @@
                 <small>Page location:  <js>data ? data.path : ''</js></small>
             </label>
             <div className="popup-dialog-btns">
-                <div className="popup-dialog-btn" onClick="js: hide">OK</div>
+                <div className="popup-dialog-btn" onClick="js: (e) => {
+                    hide();
+                }">OK</div>
             </div>
         </div>
     </div>

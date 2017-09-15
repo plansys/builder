@@ -2,7 +2,7 @@
     let activeData = this.props.tree.data[this.props.tree.active];
 
     return
-    <div className="builder-tree"
+    <div className="builder-tree" id="builder-tree"
          onContextMenu="js: (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -11,7 +11,8 @@
                     treeItem: 'root',
                     popups: this.popups
                  });
-             }">
+             }"
+    >
         <builder:Index.Popups ref="js: ref => this.popups = ref" />
 
         <ui:Popup name="tree-cm" position="mouse" ref="js: ref => this.treeCM = ref">
@@ -54,7 +55,11 @@
                                 popups: this.popups
                              });
                          }"
-                         onClick="js: (e) => { this.toggleExpand(e, item); this.selectItem(e, item); }">
+                         onClick="js: (e) => {
+                            this.toggleExpand(e, item);
+                            this.selectItem(e, item);
+                         }"
+                    >
 
                         <div className="js: 'tree-item-label' + (this.isItemCutted(item) ? ' cut' : '') +
                          (this.isItemSelected(item) ? ' select' : '')">
