@@ -4,13 +4,7 @@
     return
     <div className="builder-tree" id="builder-tree"
          onContextMenu="js: (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.treeCM.show(e, {
-                    contextMenu: this.contextMenu,
-                    treeItem: 'root',
-                    popups: this.popups
-                 });
+
              }"
     >
         <builder:Index.Popups ref="js: ref => this.popups = ref"/>
@@ -48,7 +42,7 @@
                          onContextMenu="js: (e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            this.selectItem(item);
+                            this.selectItem(e, item, true);
                             this.treeCM.show(e, {
                                 contextMenu: this.contextMenu,
                                 treeItem: item,

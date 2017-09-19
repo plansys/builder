@@ -39,33 +39,76 @@ abstract class Tree
 
     public function delete($path)
     {
+        var_dump($path); die();
         $fs = new Filesystem();
         return $fs->remove($path);
     }
 
-    public function copy($from, $to, $overwrite = false)
+    public function copy($from, $to, $overwrite = false, $start = 0)
     {
+//        var_dump($from);
+//        var_dump($to);
+//        var_dump($this->checkFiles($to));
+//        die();
         $fs = new Filesystem();
-        if(!$fs->exists($to)) {
-            return $fs->copy($from, $to);
+        if($this->checkFiles($to)) {
+            return $this->file_copy($fs, $from, $to, $start);
         } else {
             if($overwrite) {
-                return $fs->copy($from, $to, true);
+                return $this->file_copy($fs, $from, $to, $start);
+            }
+
+            if(count($from) > 1) {
+                return 'overwrite-all';
             }
             return 'overwrite';
         }
     }
 
-    public function move($from, $to, $overwrite = false)
+    public function move($from, $to, $overwrite = false, $start = 0)
     {
         $fs = new Filesystem();
-        if(!$fs->exists($to)) {
-            return $fs->rename($from, $to);
+        if($this->checkFiles($to)) {
+            return $this->file_move($fs, $from, $to, $start);
         } else {
             if($overwrite) {
-                return $fs->rename($from, $to, true);
+                return $this->file_move($fs, $from, $to, $start);
+            }
+
+            if(count($from) > 1) {
+                return 'overwrite-all';
             }
             return 'overwrite';
         }
+    }
+
+    private function checkFiles($locs) {
+        $fs = new Filesystem();
+        for($i = 0; $i < count($locs); $i++) {
+            if($fs->exists($locs[$i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function file_copy($fs, $from, $to, $start) {
+        for($i = $start; $i < count($from); $i++) {
+            $res = $fs->copy($from[$i], $to[$i], true);
+            if(!is_null($res)) {
+                return ['i' => $i, 'res' => $res];
+            }
+        }
+        return null;
+    }
+
+    private function file_move($fs, $from, $to, $start) {
+        for($i = $start; $i < count($from); $i++) {
+            $res = $fs->rename($from[$i], $to[$i], true);
+            if(!is_null($res)) {
+                return ['i' => $i, 'res' => $res];
+            }
+        }
+        return null;
     }
 }
