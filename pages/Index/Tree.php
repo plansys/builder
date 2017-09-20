@@ -58,7 +58,6 @@ class Tree extends \Yard\Page
                     break;
                 case "copy":
                     $result = $tree->copy($params['from'], $params['to'], $params['overwrite']);
-                    var_dump($result); die();
                     return $this->after_file_operation($result, $tree, @$params['path']);
                     break;
                 case "move":

@@ -37,19 +37,14 @@ abstract class Tree
         return $fs->rename($path, dirname($path) . DIRECTORY_SEPARATOR . $name);
     }
 
-    public function delete($path)
+    public function delete($path, $start = 0)
     {
-        var_dump($path); die();
         $fs = new Filesystem();
-        return $fs->remove($path);
+        return $this->file_del($fs, $path, $start);//$fs->remove($path);
     }
 
     public function copy($from, $to, $overwrite = false, $start = 0)
     {
-//        var_dump($from);
-//        var_dump($to);
-//        var_dump($this->checkFiles($to));
-//        die();
         $fs = new Filesystem();
         if($this->checkFiles($to)) {
             return $this->file_copy($fs, $from, $to, $start);
@@ -105,6 +100,16 @@ abstract class Tree
     private function file_move($fs, $from, $to, $start) {
         for($i = $start; $i < count($from); $i++) {
             $res = $fs->rename($from[$i], $to[$i], true);
+            if(!is_null($res)) {
+                return ['i' => $i, 'res' => $res];
+            }
+        }
+        return null;
+    }
+
+    private function file_del($fs, $path, $start) {
+        for($i = $start; $i < count($path); $i++) {
+            $res = $fs->remove($path);
             if(!is_null($res)) {
                 return ['i' => $i, 'res' => $res];
             }

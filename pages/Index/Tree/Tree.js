@@ -195,6 +195,12 @@ this.treeControlCommand = (e, treeItem) => {
 		console.log('ctrl + v');
 		this.pasteCommand(treeItem);
 	}
+
+	//delete
+	if (key === 46) {
+		console.log('delete');
+		this.deleteCommand(treeItem);
+	}
 };
 
 this.cutCommand = (treeItem) => {
@@ -207,7 +213,6 @@ this.cutCommand = (treeItem) => {
 this.copyCommand = (treeItem) => {
 	this.props.cutItem([]);
 	treeItem = treeItem === 'root' ? this.props.tree.selectedItems : treeItem;
-	console.log(treeItem);
 	this.props.copyItem(treeItem);
 	this.setTreeAsActiveSection();
 };
@@ -215,7 +220,6 @@ this.copyCommand = (treeItem) => {
 this.pasteCommand = (treeItem) => {
 	let clip = this.props.tree.copyItems.length > 0 ? this.props.tree.copyItems : this.props.tree.cutItems;
 	let action = this.props.tree.copyItems.length > 0 ? 'copy' : 'move';
-	console.log(clip);
 	if (clip) {
 		this.doPasteItem(treeItem, clip, action);
 	}
@@ -223,13 +227,14 @@ this.pasteCommand = (treeItem) => {
 };
 
 this.deleteCommand = (treeItem) => {
-	this.popups.confirm.show(null, {
-		data: {
-			title: 'Delete ' + (treeItem.info.ext === "" ? 'Folder' : 'File'),
-			message: (treeItem.info.ext === "" ? 'Folder' : 'File') + ' at path:<br/>"' + del + '"<br/> are about to delete.' +
-			'<small>Do you want to delete?</small>'
-		}
-	});
+	let del = this.getTreePaths(treeItem);
+	// this.popups.confirm.show(null, {
+	// 	data: {
+	// 		title: 'Delete File or Folder',
+	// 		message: 'File or Folder at path:<br/>"' + del.join("'<br/>'") + '"<br/> are about to delete.' +
+	// 		'<small>Do you want to delete?</small>'
+	// 	}
+	// });
 	this.doDeleteItem(treeItem, this.props.tree.selectedItems);
 };
 
@@ -263,8 +268,6 @@ this.selectShift = (lastSelect, select) => {
 	let s_id = this.getTreeIndex(select);
 	let i = ls_id;
 	let res = [];
-
-	console.log(tree, ls_id, s_id);
 
 	while (i !== s_id) {
 		res.push(tree[i]);
@@ -361,35 +364,36 @@ this.doPasteItem = (treeItem, item, action, overwrite) => {
 	} else {
 		tree = last_select;
 	}
-	let parent = tree._parent ? tree._parent : tree;
+	let parent = tree.info.ext == '' ? tree : tree._parent ? tree._parent : tree;
 	let relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
 	let path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
-	let toPath = parent.info.pathName + (parent.info.ext !== 'php' ? '/' + parent.info.fileName : '');
+	let toPath = parent.info.pathName;// + (parent.info.ext !== 'php' ? '/' + parent.info.fileName : '');
 	let from = this.getTreePaths(item);
 	if (parent.info.ext === 'php') {
 		toPath = toPath.replace(parent.info.fileName, '');
 	}
 	let to = [];
+	if(['/', '\\'].indexOf(toPath.substr(toPath.length - 1)) < 0) {
+		toPath = toPath + '/';
+	}
 	for (var i = 0; i < item.length; i++) {
 		to.push(toPath + item[i].info.fileName);
 	}
 
-	console.log(from, to);
-
-	this.pasteItem(action, path, from, to, overwrite, (result) => {
-		console.log(from, to);
-		console.log(result);
+	this.pasteItem(action, parent, path, from, to, overwrite, (result) => {
 		if (result === 'overwrite') {
+			var clip = item[0];
 			this.popups.confirm.show(null, {
 				data: {
 					title: (clip.info.ext === "" ? 'Folder' : 'File') + ' Overwrite',
 					message: (clip.info.ext === "" ? 'Folder' : 'File') + ' in path:<br/>"' + to + '"<br/>is exist.' +
 					'<small>Do you want to overwrite?</small>'
 				}
+			}).then((res) => {
+				if (this.popups.confirm.value === 'y') {
+					this.doPasteItem(treeItem, item, action, 'y');
+				}
 			});
-			if (this.popups.confirm.value === 'y') {
-				this.doPasteItem(treeItem, item, action, 'y');
-			}
 		} else if (result === 'overwrite-all') {
 			this.popups.confirmAll.show(null, {
 				data: {
@@ -412,9 +416,8 @@ this.doPasteItem = (treeItem, item, action, overwrite) => {
 	});
 };
 
-this.pasteItem = (action, path, from, to, overwrite, cb) => {
+this.pasteItem = (action, parent, path, from, to, overwrite, cb) => {
 	overwrite = overwrite ? overwrite : false;
-	console.log(path, from, to, overwrite);
 	this.query({
 		action: action,
 		path: path,
@@ -433,31 +436,43 @@ this.pasteItem = (action, path, from, to, overwrite, cb) => {
 		if (!isJSON) {
 			cb(result);
 		} else {
-			this.update(parent, {
-				expanded: true,
-				childs: result
-			});
+			if(path != '/') {
+				this.update(parent, {
+					expanded: true,
+					childs: result
+				});
+			} else {
+				this.initTree(this.api);
+			}
 			cb('ok');
 		}
 	});
 };
 
 this.doDeleteItem = (treeItem, item) => {
-	console.log(treeItem);
-
 	let del = this.getTreePaths(item);
-	let parent = treeItem._parent ? treeItem._parent : treeItem;
+	let select = this.props.tree.selectedItems;
+	let last_select = select[select.length - 1];
+	let tree = null;
+	if (treeItem == 'root') {
+		tree = this.props.tree.data[this.props.tree.active][0];
+	} else if (treeItem == 'last') {
+		tree = last_select;
+	} else {
+		tree = last_select;
+	}
+	let parent = tree.info.ext == '' ? tree : tree._parent ? tree._parent : tree;
 	let relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
 	let path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
 
 	this.deleteItem(del, path, parent, (res) => {
 		if (res !== 'ok') {
-			this.popups.info.show(null, {
-				data: {
-					title: (clip.info.ext === "" ? 'Folder' : 'File') + ' Error',
-					message: res
-				}
-			});
+			// this.popups.info.show(null, {
+			// 	data: {
+			// 		title: 'Delete File or Folder Operation Error',
+			// 		message: res
+			// 	}
+			// });
 		}
 	});
 };
@@ -479,10 +494,14 @@ this.deleteItem = (del, path, parent, cb) => {
 		if (!isJSON) {
 			cb(result);
 		} else {
-			this.update(parent, {
-				expanded: true,
-				childs: result
-			});
+			if(path != '/') {
+				this.update(parent, {
+					expanded: true,
+					childs: result
+				});
+			} else {
+				this.initTree(this.api);
+			}
 			cb('ok');
 		}
 	});
