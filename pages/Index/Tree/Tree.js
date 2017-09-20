@@ -9,7 +9,7 @@ this.contextMenu = [
 				onClick: (e) => {
 					this.popups.createNew.show(e, {
 						data: {
-							label: 'Page',
+							label: 'Create New Page',
 							path: (treeItem.hasChild ? '/' + treeItem.label : '/' + treeItem.path)
 						}
 					});
@@ -26,7 +26,7 @@ this.contextMenu = [
 				onClick: (e) => {
 					this.popups.createNew.show(e, {
 						data: {
-							label: 'Folder',
+							label: 'Create New Folder',
 							path: (treeItem.hasChild ? '/' + treeItem.label : '/' + treeItem.path)
 						}
 					});
@@ -79,8 +79,7 @@ this.contextMenu = [
 		props: (treeItem, menuItem, hide) => {
 			return {
 				onClick: (e) => {
-					//rename
-					//save
+					this.renameCommand(treeItem);
 					hide();
 				}
 			}
@@ -177,6 +176,9 @@ this.setTreeAsActiveSection = () => {
 };
 
 this.treeControlCommand = (e, treeItem) => {
+	e.preventDefault();
+	e.stopPropagation();
+
 	let key = e.which || e.keyCode; // keyCode detection
 	let ctrl = e.ctrlKey ? e.ctrlKey : ((key === 17) ? true : false);
 
@@ -194,6 +196,11 @@ this.treeControlCommand = (e, treeItem) => {
 	if (key === 86 && ctrl) {
 		console.log('ctrl + v');
 		this.pasteCommand(treeItem);
+	}
+	//ctrl + r
+	if (key === 82 && ctrl) {
+		console.log('ctrl + r');
+		this.renameCommand(treeItem);
 	}
 
 	//delete
@@ -226,16 +233,25 @@ this.pasteCommand = (treeItem) => {
 	this.setTreeAsActiveSection();
 };
 
+this.renameCommand = (treeItem) => {
+	this.doRenameItem(treeItem, false);
+};
+
 this.deleteCommand = (treeItem) => {
 	let del = this.getTreePaths(treeItem);
-	// this.popups.confirm.show(null, {
-	// 	data: {
-	// 		title: 'Delete File or Folder',
-	// 		message: 'File or Folder at path:<br/>"' + del.join("'<br/>'") + '"<br/> are about to delete.' +
-	// 		'<small>Do you want to delete?</small>'
-	// 	}
-	// });
-	this.doDeleteItem(treeItem, this.props.tree.selectedItems);
+	console.log(del.join("'<br/>'"));
+	this.popups.confirm.show(null, {
+		data: {
+			title: 'Delete File or Folder',
+			message: 'File or Folder at path:<br/>"' + del.join('"<br/>"') + '"<br/> are about to delete.' +
+			'<small>Do you want to delete?</small>'
+		}
+	}).then((res) => {
+		console.log(res);
+		if(res == 'y') {
+			this.doDeleteItem(treeItem, this.props.tree.selectedItems);
+		}
+	});
 };
 
 this.selectItem = (e, treeItem, rightClick) => {
@@ -380,6 +396,41 @@ this.doPasteItem = (treeItem, item, action, overwrite) => {
 		to.push(toPath + item[i].info.fileName);
 	}
 
+	this.copyMoveItem(action, parent, path, from, to, overwrite);
+};
+
+this.doRenameItem = (treeItem, overwrite) => {
+	let select = this.props.tree.selectedItems;
+	let tree = select[select.length - 1];
+	let parent = tree.info.ext == '' ? tree : tree._parent ? tree._parent : tree;
+	let relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
+	let path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
+	let toPath = parent.info.pathName;// + (parent.info.ext !== 'php' ? '/' + parent.info.fileName : '');
+	let from = this.getTreePaths([tree]);
+	if (parent.info.ext === 'php') {
+		toPath = toPath.replace(parent.info.fileName, '');
+	}
+	let to = [];
+	if(['/', '\\'].indexOf(toPath.substr(toPath.length - 1)) < 0) {
+		toPath = toPath + '/';
+	}
+
+	this.popups.createNew.show(null, {
+		data: {
+			label: 'Rename Item',
+			path: path
+		}
+	}).then((res) => {
+		if (res) {
+			to.push(toPath + item[i].info.fileName);
+			this.copyMoveItem('move', parent, path, from, to, overwrite);
+		} else {
+			this.doRenameItem(treeItem, overwrite);
+		}
+	});
+};
+
+this.copyMoveItem = (action, parent, path, from, to, overwrite) => {
 	this.pasteItem(action, parent, path, from, to, overwrite, (result) => {
 		if (result === 'overwrite') {
 			var clip = item[0];
@@ -390,7 +441,7 @@ this.doPasteItem = (treeItem, item, action, overwrite) => {
 					'<small>Do you want to overwrite?</small>'
 				}
 			}).then((res) => {
-				if (this.popups.confirm.value === 'y') {
+				if (res == 'y') {
 					this.doPasteItem(treeItem, item, action, 'y');
 				}
 			});
@@ -402,7 +453,7 @@ this.doPasteItem = (treeItem, item, action, overwrite) => {
 					'<small>Do you want to overwrite?</small>'
 				}
 			});
-			if (this.popups.confirm.value === 'y') {
+			if (res == 'y') {
 				this.doPasteItem(treeItem, item, action, 'y');
 			}
 		} else if (result !== 'ok') {
@@ -436,14 +487,7 @@ this.pasteItem = (action, parent, path, from, to, overwrite, cb) => {
 		if (!isJSON) {
 			cb(result);
 		} else {
-			if(path != '/') {
-				this.update(parent, {
-					expanded: true,
-					childs: result
-				});
-			} else {
-				this.initTree(this.api);
-			}
+			this.refreshTree(parent, path, result);
 			cb('ok');
 		}
 	});
@@ -467,12 +511,12 @@ this.doDeleteItem = (treeItem, item) => {
 
 	this.deleteItem(del, path, parent, (res) => {
 		if (res !== 'ok') {
-			// this.popups.info.show(null, {
-			// 	data: {
-			// 		title: 'Delete File or Folder Operation Error',
-			// 		message: res
-			// 	}
-			// });
+			this.popups.info.show(null, {
+				data: {
+					title: 'Delete File or Folder Operation Error',
+					message: res
+				}
+			});
 		}
 	});
 };
@@ -494,14 +538,7 @@ this.deleteItem = (del, path, parent, cb) => {
 		if (!isJSON) {
 			cb(result);
 		} else {
-			if(path != '/') {
-				this.update(parent, {
-					expanded: true,
-					childs: result
-				});
-			} else {
-				this.initTree(this.api);
-			}
+			this.refreshTree(parent, path, result);
 			cb('ok');
 		}
 	});
@@ -534,6 +571,17 @@ this.toggleExpand = (e, item) => {
 		this.update(item, {
 			expanded: false
 		});
+	}
+};
+
+this.refreshTree = (tree, path, data) => {
+	if(path != '/') {
+		this.update(parent, {
+			expanded: true,
+			childs: data
+		});
+	} else {
+		this.initTree(this.api);
 	}
 };
 
