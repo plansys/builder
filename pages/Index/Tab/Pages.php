@@ -2,7 +2,6 @@
 
 namespace builder\Pages\Index\Tab;
 
-
 class Pages extends \Yard\Page
 {
     public $store = ['builder:tab'];

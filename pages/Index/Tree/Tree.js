@@ -8,10 +8,8 @@ this.contextMenu = [
 			return {
 				onClick: (e) => {
 					this.popups.createNew.show(e, {
-						data: {
-							label: 'Create New Page',
-							path: (treeItem.hasChild ? '/' + treeItem.label : '/' + treeItem.path)
-						}
+						label: 'Create New Page',
+						path: (treeItem.hasChild ? '/' + treeItem.label : '/' + treeItem.path)
 					});
 					hide();
 				}
@@ -25,10 +23,8 @@ this.contextMenu = [
 			return {
 				onClick: (e) => {
 					this.popups.createNew.show(e, {
-						data: {
-							label: 'Create New Folder',
-							path: (treeItem.hasChild ? '/' + treeItem.label : '/' + treeItem.path)
-						}
+						label: 'Create New Folder',
+						path: (treeItem.hasChild ? '/' + treeItem.label : '/' + treeItem.path)
 					});
 					hide();
 				}
@@ -248,7 +244,7 @@ this.deleteCommand = (treeItem) => {
 		}
 	}).then((res) => {
 		console.log(res);
-		if(res == 'y') {
+		if(res === 'y') {
 			this.doDeleteItem(treeItem, this.props.tree.selectedItems);
 		}
 	});
@@ -373,14 +369,14 @@ this.doPasteItem = (treeItem, item, action, overwrite) => {
 	let select = this.props.tree.selectedItems;
 	let last_select = select[select.length - 1];
 	let tree = null;
-	if (treeItem == 'root') {
+	if (treeItem === 'root') {
 		tree = this.props.tree.data[this.props.tree.active][0];
-	} else if (treeItem == 'last') {
+	} else if (treeItem === 'last') {
 		tree = last_select;
 	} else {
 		tree = last_select;
 	}
-	let parent = tree.info.ext == '' ? tree : tree._parent ? tree._parent : tree;
+	let parent = tree.info.ext === '' ? tree : tree._parent ? tree._parent : tree;
 	let relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
 	let path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
 	let toPath = parent.info.pathName;// + (parent.info.ext !== 'php' ? '/' + parent.info.fileName : '');
@@ -402,7 +398,7 @@ this.doPasteItem = (treeItem, item, action, overwrite) => {
 this.doRenameItem = (treeItem, overwrite) => {
 	let select = this.props.tree.selectedItems;
 	let tree = select[select.length - 1];
-	let parent = tree.info.ext == '' ? tree : tree._parent ? tree._parent : tree;
+	let parent = tree.info.ext === '' ? tree : tree._parent ? tree._parent : tree;
 	let relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
 	let path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
 	let toPath = parent.info.pathName;// + (parent.info.ext !== 'php' ? '/' + parent.info.fileName : '');
@@ -441,7 +437,7 @@ this.copyMoveItem = (action, parent, path, from, to, overwrite) => {
 					'<small>Do you want to overwrite?</small>'
 				}
 			}).then((res) => {
-				if (res == 'y') {
+				if (res === 'y') {
 					this.doPasteItem(treeItem, item, action, 'y');
 				}
 			});
@@ -453,7 +449,7 @@ this.copyMoveItem = (action, parent, path, from, to, overwrite) => {
 					'<small>Do you want to overwrite?</small>'
 				}
 			});
-			if (res == 'y') {
+			if (res === 'y') {
 				this.doPasteItem(treeItem, item, action, 'y');
 			}
 		} else if (result !== 'ok') {
@@ -498,14 +494,14 @@ this.doDeleteItem = (treeItem, item) => {
 	let select = this.props.tree.selectedItems;
 	let last_select = select[select.length - 1];
 	let tree = null;
-	if (treeItem == 'root') {
+	if (treeItem === 'root') {
 		tree = this.props.tree.data[this.props.tree.active][0];
-	} else if (treeItem == 'last') {
+	} else if (treeItem === 'last') {
 		tree = last_select;
 	} else {
 		tree = last_select;
 	}
-	let parent = tree.info.ext == '' ? tree : tree._parent ? tree._parent : tree;
+	let parent = tree.info.ext === '' ? tree : tree._parent ? tree._parent : tree;
 	let relPath = parent.info.ext !== '' ? '' : parent.info.relativePathname;
 	let path = parent.path !== '' ? parent.path.substr(1) + '/' + relPath : '/' + relPath;
 

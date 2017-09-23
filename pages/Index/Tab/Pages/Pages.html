@@ -1,4 +1,4 @@
-<ui:Tab.Root className="builder-tab" data="this.props.content">
+<ui:Tab className="builder-tab" data="this.props.content">
     <ui:Layout.Row height="30px">
         <ui:Tab.Nav>
             <button className="js: item.active ? 'active' : ''">
@@ -8,18 +8,7 @@
     </ui:Layout.Row>
     <ui:Layout.Row>
         <ui:Tab.Content>
-            <ui:Layout.Row className="editor">
-                <builder:Editor.Pages.Html style="js: { display: item.type == 'html' ? 'block' : 'none'}"
-                                           value="js: item.value"/>
-                <builder:Editor.Pages.Css style="js: { display: item.type == 'css' ? 'block' : 'none'}"
-                                          value="js: item.value"/>
-                <builder:Editor.Pages.Js style="js: { display: item.type == 'js' ? 'block' : 'none'}"
-                                         value="js: item.value"/>
-                <builder:Editor.Pages.Setting style="js: { display: item.type == 'setting' ? 'block' : 'none'}"
-                                              value="js: item.value"/>
-                <builder:Editor.Pages.Redux style="js: { display: item.type == 'redux' ? 'block' : 'none'}"
-                                            value="js: item.value"/>
-            </ui:Layout.Row>
+            <js>item.value</js>
         </ui:Tab.Content>
     </ui:Layout.Row>
-</ui:Tab.Root>
+</ui:Tab>
